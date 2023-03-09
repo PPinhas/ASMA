@@ -1,4 +1,4 @@
-package intrigue.game;
+package intrige.game;
 
 public class Piece {
     public enum Job{

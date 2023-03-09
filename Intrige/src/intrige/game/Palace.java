@@ -1,4 +1,4 @@
-package intrigue.game;
+package intrige.game;
 import java.util.ArrayList;
 import java.util.HashMap;
 

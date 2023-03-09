@@ -1,7 +1,7 @@
-package intrigue.game;
+package intrige.game;
 
 import java.util.ArrayList;
-import static intrigue.game.Piece.Job.*;
+import static intrige.game.Piece.Job.*;
 
 
 public class Player {
@@ -22,5 +22,9 @@ public class Player {
             this.pieces.add(new Piece(Healer));
 
         }
+    }
+
+    public void playTurn() {
+
     }
 }
