@@ -25,7 +25,7 @@ public class Game {
         palaces = new ArrayList<Palace>();
         players = new ArrayList<Player>();
         for(int i = 0; i < 5; i++){
-            palaces.add(new Palace());
+            palaces.add(new Palace(i + 1));
             players.add(new Player());
         }
         this.round = Round.One;
