@@ -1,4 +1,4 @@
-package intrige.game;
+package game;
 
 import java.util.ArrayList;
 
