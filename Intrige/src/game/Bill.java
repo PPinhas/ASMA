@@ -1,4 +1,4 @@
-package intrige.game;
+package game;
 
 public class Bill {
     private int value;

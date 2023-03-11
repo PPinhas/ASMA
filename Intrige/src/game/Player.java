@@ -1,7 +1,7 @@
-package intrige.game;
+package game;
 
 import java.util.ArrayList;
-import static intrige.game.Piece.Job.*;
+import static game.Piece.Job.*;
 
 
 public class Player {
