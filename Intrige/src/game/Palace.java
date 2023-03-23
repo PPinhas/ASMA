@@ -16,7 +16,7 @@ public class Palace {
     public Player getPlayer() {return player;}
 
     public Palace(int player){
-        this.player = Player.values()[player];
+        this.player = Player.values()[player-1];
         this.park = new ArrayList<Piece>();
         this.cards = new HashMap<Integer, Piece>();
         cards.put(1000, null);

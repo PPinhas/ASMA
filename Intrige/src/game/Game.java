@@ -2,7 +2,12 @@ package game;
 
 import java.util.ArrayList;
 
-public class Game {
+import jade.wrapper.AgentContainer;
+import jade.wrapper.StaleProxyException;
+
+
+public class Game{
+
     private enum Round {
         One, Two, Three, Four, Five
     };
@@ -19,17 +24,22 @@ public class Game {
 
     private ArrayList<Player> players;
 
-    public Game(){
+    public Game(AgentContainer container){
         this.island = new ArrayList<Piece>();
         this.isOver = false;
         palaces = new ArrayList<Palace>();
         players = new ArrayList<Player>();
         for(int i = 0; i < 5; i++){
             palaces.add(new Palace(i + 1));
-            players.add(new Player());
+            try {
+                players.add(new Player(container, i + 1));
+            } catch (StaleProxyException e) {
+                throw new RuntimeException(e);
+            }
         }
         this.round = Round.One;
         this.turn = Turn.One;
+        //this.setVisible(true);
     }
 
     public boolean isOver() {return isOver;}
