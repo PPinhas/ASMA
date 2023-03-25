@@ -3,24 +3,28 @@ package game;
 import java.util.ArrayList;
 
 import jade.wrapper.AgentContainer;
+import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 
-public class Game{
 
-    private enum Round {
+public class Game {
+
+    public enum Round {
         One, Two, Three, Four, Five
     };
     private Round round;
 
     private ArrayList<Piece> island;
 
-    private enum Turn{
+    public enum Turn{
         One, Two, Three, Four, Five
     };
     private Turn turn;
     private ArrayList<Palace> palaces;
     private boolean isOver;
+
+    private AgentController agent;
 
     private ArrayList<Player> players;
 
@@ -39,6 +43,12 @@ public class Game{
         }
         this.round = Round.One;
         this.turn = Turn.One;
+        try {
+            this.agent = container.createNewAgent("GameMaster", "agents.GameMaster", null);
+            this.agent.start();
+        } catch (StaleProxyException e) {
+            throw new RuntimeException(e);
+        }
         //this.setVisible(true);
     }
 
@@ -68,8 +78,6 @@ public class Game{
 
     private void playTurn() {
         System.out.println("Round: " + round + " Turn: " + turn);
-
-        this.players.get(turn.ordinal()).playTurn();
 
     }
 

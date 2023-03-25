@@ -8,8 +8,11 @@ public class Piece {
         Healer
     }
     private Job job;
-    public Piece(Job job){
+
+    private Player player;
+    public Piece(Job job, Player player){
         this.job = job;
+        this.player = player;
     }
 
     public Job getJob(){
