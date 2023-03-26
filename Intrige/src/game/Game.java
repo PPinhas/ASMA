@@ -43,8 +43,10 @@ public class Game {
         }
         this.round = Round.One;
         this.turn = Turn.One;
+        Object[] args = new Object[1];
+        args[0] = this;
         try {
-            this.agent = container.createNewAgent("GameMaster", "agents.GameMaster", null);
+            this.agent = container.createNewAgent("GameMaster", "agents.GameMaster", args);
             this.agent.start();
         } catch (StaleProxyException e) {
             throw new RuntimeException(e);
@@ -53,19 +55,6 @@ public class Game {
     }
 
     public boolean isOver() {return isOver;}
-
-    public void playRound(){
-        do{
-
-            do {
-                playTurn();
-                nextTurn();
-            } while (turn != Turn.One);
-
-            nextRound();
-        } while(round != Round.One);
-        isOver = true;;
-    }
 
     private void nextRound() {
         if(this.round == Round.Five){
@@ -76,14 +65,14 @@ public class Game {
         }
     }
 
-    private void playTurn() {
-        System.out.println("Round: " + round + " Turn: " + turn);
-
+    public Turn getTurn() {
+        return turn;
     }
 
-    private void nextTurn(){
+    public void nextTurn(){
         if(this.turn == Turn.Five){
             this.turn = Turn.One;
+            nextRound();
         }
         else{
             this.turn = Turn.values()[turn.ordinal() + 1];

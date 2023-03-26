@@ -33,7 +33,10 @@ public class Player {
 
         }
         String agentName = "player" + id;
-        agent = container.createNewAgent(agentName, "agents.IntrigeAgent", null);
+        Object[] args = new Object[1];
+        args[0] = id;
+
+        agent = container.createNewAgent(agentName, "agents.IntrigeAgent", args);
         agent.start();
     }
 }

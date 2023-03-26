@@ -12,7 +12,5 @@ public class Main {
         profile.setParameter(Profile.CONTAINER_NAME, "Intrige");
         AgentContainer gameContainer = jade.core.Runtime.instance().createMainContainer(profile);
         Game game = new Game(gameContainer);
-
-        do {game.playRound();} while (game.isOver() == false);
     }
 }

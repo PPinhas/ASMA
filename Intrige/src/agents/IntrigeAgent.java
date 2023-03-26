@@ -1,10 +1,11 @@
 package agents;
-import game.Game;
-import game.Palace;
-import game.Piece;
+import behaviours.PlayTurn;
+import behaviours.WaitForTurn;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 
-import java.util.ArrayList;
+import java.sql.SQLOutput;
 
 public class IntrigeAgent extends Agent {
     private int id;
@@ -13,9 +14,17 @@ public class IntrigeAgent extends Agent {
     }
 
     protected void setup() {
-        System.out.println("");
-        getAID().setName("IntrigeAgent" + this.id);
+
         System.out.println("Agent " + getAID().getName() + " is ready.");
+        Object[] args = getArguments();
+        id = (int) args[0];
+        CyclicBehaviour waitForTurn = new WaitForTurn();
+        addBehaviour(waitForTurn);
+        while(!waitForTurn.done()){
+            //do nothing
+        }
+        Behaviour playTurn = new PlayTurn();
+        addBehaviour(playTurn);
     }
     protected void takeDown() {
         System.out.println("Agent " + getAID().getName() + " is shutting down.");
