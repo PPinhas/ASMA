@@ -1,8 +1,16 @@
 import game.Game;
+import jade.core.Profile;
+import jade.core.ProfileException;
+import jade.core.ProfileImpl;
+import jade.wrapper.AgentContainer;
+
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game();
 
-        do {game.playRound();} while (game.isOver() == false);
+        Profile profile = new ProfileImpl();
+        profile.setParameter(Profile.GUI, "true");
+        profile.setParameter(Profile.CONTAINER_NAME, "Intrige");
+        AgentContainer gameContainer = jade.core.Runtime.instance().createMainContainer(profile);
+        Game game = new Game(gameContainer);
     }
 }
