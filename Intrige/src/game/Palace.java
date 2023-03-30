@@ -10,7 +10,7 @@ public class Palace {
 
     public static class Card {
         private final int value;
-        private final Piece piece;
+        private Piece piece;
 
         public Card(int value) {
             this(value, null);
@@ -27,6 +27,10 @@ public class Palace {
 
         public Piece getPiece() {
             return piece;
+        }
+
+        public void setPiece(Piece piece) {
+            this.piece = piece;
         }
     }
 
@@ -90,5 +94,11 @@ public class Palace {
 
     public void addWaitingPiece(Piece piece) {
         this.parkPieces.add(piece);
+    }
+
+    public void assignPiece(Piece piece, Card card) {
+        // TODO need to handle the piece that is replaced
+        card.setPiece(piece);
+        this.parkPieces.remove(piece);
     }
 }

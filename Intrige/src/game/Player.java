@@ -55,6 +55,10 @@ public class Player implements Comparable<Player> {
         return palace;
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public int compareTo(Player o) {
         return this.id - o.id;

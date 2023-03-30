@@ -51,10 +51,22 @@ public class Game {
 
     private void nextRound() {
         if (this.currentRound == this.maxRounds) {
-            this.currentRound = 1;
+            endGame();
         } else {
             this.currentRound++;
         }
+    }
+
+    private void endGame() {
+        Player winner = players.get(0);
+        for (Player player : this.players) {
+            if (player.getMoney() > winner.getMoney()) {
+                winner = player;
+            }
+        }
+        this.isOver = true;
+
+        System.out.println("Game is over. The winner is player" + winner.getId() + " with " + winner.getMoney() + " money.");
     }
 
     public void nextTurn() {
