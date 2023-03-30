@@ -19,4 +19,8 @@ public class Piece {
     public Job getJob() {
         return job;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
 }

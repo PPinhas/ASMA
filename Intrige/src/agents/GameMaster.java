@@ -13,7 +13,7 @@ public class GameMaster extends Agent {
         System.out.println(getAID().getName() + " is ready.");
 
         while (!game.isOver()) {
-            System.out.println("Starting turn " + game.getCurrentPlayer() + 1);
+            System.out.println("Starting turn with player " + (game.getCurrentPlayer() + 1));
             Behaviour turnMaster = new TurnMaster(game.getCurrentPlayer() + 1);
             addBehaviour(turnMaster);
             while (!turnMaster.done()) {

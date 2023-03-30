@@ -66,6 +66,18 @@ public class Game {
         }
     }
 
+    public void collectIncome() {
+        for (Player player : this.players) {
+            Palace palace = player.getPalace();
+            for (Palace.Card card : palace.getCards()) {
+                Piece piece = card.getPiece();
+                if (piece != null) {
+                    piece.getPlayer().increaseMoney(card.getValue());
+                }
+            }
+        }
+    }
+
     public boolean isOver() {
         return isOver;
     }

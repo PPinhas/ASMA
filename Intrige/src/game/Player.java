@@ -15,14 +15,6 @@ public class Player {
     private final ArrayList<Piece> pieces;
     private final Palace palace;
 
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
     public Player(AgentContainer container, int id) throws StaleProxyException {
         this.money = STARTING_MONEY;
         this.pieces = new ArrayList<>();
@@ -47,5 +39,17 @@ public class Player {
 
         agent = container.createNewAgent(agentName, "agents.IntrigeAgent", args);
         agent.start();
+    }
+
+    public void increaseMoney(int amount) {
+        this.money += amount;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public Palace getPalace() {
+        return palace;
     }
 }

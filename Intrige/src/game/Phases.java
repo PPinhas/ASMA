@@ -11,6 +11,10 @@ public class Phases {
 
     private phase currentPhase;
 
+    public Phases() {
+        currentPhase = phase.CollectIncome;
+    }
+
     private void nextPhase() {
         switch (currentPhase) {
             case CollectIncome:
@@ -47,7 +51,7 @@ public class Phases {
     }
 
     protected void collectIncome(Player player) {
-        player.setMoney(player.getMoney() + 10000);
+        player.increaseMoney(10000);
     }
 
     protected void assignJobs() {
@@ -57,9 +61,5 @@ public class Phases {
     }
 
     protected void negotiation() {
-    }
-
-    public Phases() {
-        currentPhase = phase.CollectIncome;
     }
 }
