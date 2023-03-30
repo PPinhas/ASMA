@@ -9,13 +9,15 @@ import java.util.ArrayList;
 import static config.Config.*;
 
 
-public class Player {
+public class Player implements Comparable<Player> {
+    private final int id;
     private int money;
     private final AgentController agent;
     private final ArrayList<Piece> pieces;
     private final Palace palace;
 
     public Player(AgentContainer container, int id) throws StaleProxyException {
+        this.id = id;
         this.money = STARTING_MONEY;
         this.pieces = new ArrayList<>();
         this.palace = new Palace();
@@ -33,9 +35,9 @@ public class Player {
             pieces.add(new Piece(Piece.Job.Healer, this));
         }
 
-        String agentName = "player" + id;
+        String agentName = "player" + this.id;
         Object[] args = new Object[1];
-        args[0] = id;
+        args[0] = this.id;
 
         agent = container.createNewAgent(agentName, "agents.IntrigeAgent", args);
         agent.start();
@@ -51,5 +53,10 @@ public class Player {
 
     public Palace getPalace() {
         return palace;
+    }
+
+    @Override
+    public int compareTo(Player o) {
+        return this.id - o.id;
     }
 }

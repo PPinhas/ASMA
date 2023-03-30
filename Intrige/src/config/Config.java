@@ -9,4 +9,5 @@ public class Config {
     public static final int NUM_MINISTERS_PER_PLAYER = 2;
     public static final int NUM_ALCHEMISTS_PER_PLAYER = 2;
     public static final int NUM_HEALERS_PER_PLAYER = 2;
+    public static final int MINIMUM_BRIBE = 1000;
 }
