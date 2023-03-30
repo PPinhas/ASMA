@@ -6,6 +6,9 @@ import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
 
+import static config.Config.NUM_PLAYERS;
+import static config.Config.NUM_ROUNDS;
+
 public class Game {
     private int currentRound;
     private final int maxRounds;
@@ -18,19 +21,19 @@ public class Game {
 
     private final AgentController agent;
 
-    public Game(AgentContainer container, int rounds, int numPlayers) {
-        this.maxRounds = rounds;
+    public Game(AgentContainer container) {
+        this.maxRounds = NUM_ROUNDS;
+        this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
-        this.numPlayers = numPlayers;
         this.currentPlayer = 1;
 
         this.islandPieces = new ArrayList<>();
         this.isOver = false;
-        players = new ArrayList<>();
+        this.players = new ArrayList<>();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < this.numPlayers; i++) {
             try {
-                players.add(new Player(container, i + 1));
+                this.players.add(new Player(container, i + 1));
             } catch (StaleProxyException e) {
                 throw new RuntimeException(e);
             }
@@ -47,7 +50,7 @@ public class Game {
     }
 
     private void nextRound() {
-        if (this.currentRound == maxRounds) {
+        if (this.currentRound == this.maxRounds) {
             this.currentRound = 1;
         } else {
             this.currentRound++;

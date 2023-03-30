@@ -10,6 +10,6 @@ public class Main {
         profile.setParameter(Profile.GUI, "true");
         profile.setParameter(Profile.CONTAINER_NAME, "Intrige");
         AgentContainer gameContainer = jade.core.Runtime.instance().createMainContainer(profile);
-        new Game(gameContainer, 5, 5);
+        new Game(gameContainer);
     }
 }

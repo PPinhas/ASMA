@@ -6,7 +6,7 @@ import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
 
-import static game.Piece.Job.*;
+import static config.Config.*;
 
 
 public class Player {
@@ -24,15 +24,21 @@ public class Player {
     }
 
     public Player(AgentContainer container, int id) throws StaleProxyException {
-        this.money = 32000; // TODO parametrize
+        this.money = STARTING_MONEY;
         this.pieces = new ArrayList<>();
         this.palace = new Palace();
 
-        for (int i = 0; i < 2; i++) {
-            this.pieces.add(new Piece(Scribe, this));
-            this.pieces.add(new Piece(Minister, this));
-            this.pieces.add(new Piece(Alchemist, this));
-            this.pieces.add(new Piece(Healer, this));
+        for (int i = 0; i < NUM_SCRIBES_PER_PLAYER; i++) {
+            pieces.add(new Piece(Piece.Job.Scribe, this));
+        }
+        for (int i = 0; i < NUM_MINISTERS_PER_PLAYER; i++) {
+            pieces.add(new Piece(Piece.Job.Minister, this));
+        }
+        for (int i = 0; i < NUM_ALCHEMISTS_PER_PLAYER; i++) {
+            pieces.add(new Piece(Piece.Job.Alchemist, this));
+        }
+        for (int i = 0; i < NUM_HEALERS_PER_PLAYER; i++) {
+            pieces.add(new Piece(Piece.Job.Healer, this));
         }
 
         String agentName = "player" + id;
