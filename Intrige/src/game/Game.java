@@ -25,7 +25,7 @@ public class Game {
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
-        this.currentPlayer = 1;
+        this.currentPlayer = (int) (Math.random() * this.numPlayers) + 1;
 
         this.islandPieces = new ArrayList<>();
         this.isOver = false;
