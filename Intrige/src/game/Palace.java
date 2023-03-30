@@ -1,27 +1,27 @@
 package game;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Palace {
+    private final ArrayList<Piece> parkPieces;
+    private final HashMap<Integer, Piece> cards;
 
-    private enum Player{
-        One, Two, Three, Four, Five
-    };
+    public Palace() {
+        this.parkPieces = new ArrayList<>();
+        this.cards = new HashMap<>();
 
-    private Player player;
-
-    private ArrayList<Piece> park;
-    private HashMap<Integer, Piece> cards;
-
-    public Player getPlayer() {return player;}
-
-    public Palace(int player){
-        this.player = Player.values()[player-1];
-        this.park = new ArrayList<Piece>();
-        this.cards = new HashMap<Integer, Piece>();
         cards.put(1000, null);
         cards.put(3000, null);
         cards.put(6000, null);
         cards.put(10000, null);
+    }
+
+    public ArrayList<Piece> getParkPieces() {
+        return parkPieces;
+    }
+
+    public HashMap<Integer, Piece> getCards() {
+        return cards;
     }
 }

@@ -4,13 +4,13 @@ import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 
-
 public class TurnMaster extends Behaviour {
     private boolean done = false;
     private int turn;
+
     // Constructor
     public TurnMaster(int turn) {
-        this.turn= turn;
+        this.turn = turn;
     }
 
     // This method is called when the behavior starts
@@ -20,13 +20,12 @@ public class TurnMaster extends Behaviour {
 
     // This method is called repeatedly until the behavior is finished
     public void action() {
-        //System.out.println("Performing TurnMaster");
         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-        String aid = "player" +this.turn+ "@172.17.0.1;1099/JADE";
+        String aid = "player" + this.turn + "@172.17.0.1;1099/JADE";
         msg.addReceiver(new AID(aid, AID.ISLOCALNAME));
         msg.setContent("It's your turn");
         myAgent.send(msg);
-        //if got response
+        // if got response
         done = true;
     }
 

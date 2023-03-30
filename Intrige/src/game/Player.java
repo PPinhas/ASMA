@@ -1,18 +1,19 @@
 package game;
 
-import agents.IntrigeAgent;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
+
 import static game.Piece.Job.*;
 
 
 public class Player {
     private int money;
-    private  AgentController agent;
-    private ArrayList<Piece> pieces;
+    private final AgentController agent;
+    private final ArrayList<Piece> pieces;
+    private final Palace palace;
 
     public void setMoney(int money) {
         this.money = money;
@@ -23,15 +24,17 @@ public class Player {
     }
 
     public Player(AgentContainer container, int id) throws StaleProxyException {
-        this.money = 32000;
-        this.pieces = new ArrayList<Piece>();
-        for(int i = 0; i < 2; i++){
+        this.money = 32000; // TODO parametrize
+        this.pieces = new ArrayList<>();
+        this.palace = new Palace();
+
+        for (int i = 0; i < 2; i++) {
             this.pieces.add(new Piece(Scribe, this));
             this.pieces.add(new Piece(Minister, this));
             this.pieces.add(new Piece(Alchemist, this));
             this.pieces.add(new Piece(Healer, this));
-
         }
+
         String agentName = "player" + id;
         Object[] args = new Object[1];
         args[0] = id;

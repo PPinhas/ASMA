@@ -1,48 +1,41 @@
 package game;
 
-import java.util.ArrayList;
-
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
-
+import java.util.ArrayList;
 
 public class Game {
-
-    public enum Round {
-        One, Two, Three, Four, Five
-    };
-    private Round round;
-
-    private ArrayList<Piece> island;
-
-    public enum Turn{
-        One, Two, Three, Four, Five
-    };
-    private Turn turn;
-    private ArrayList<Palace> palaces;
+    private int currentRound;
+    private final int maxRounds;
     private boolean isOver;
 
-    private AgentController agent;
+    private final ArrayList<Player> players;
+    private int currentPlayer;
+    private final int numPlayers;
+    private final ArrayList<Piece> islandPieces;
 
-    private ArrayList<Player> players;
+    private final AgentController agent;
 
-    public Game(AgentContainer container){
-        this.island = new ArrayList<Piece>();
+    public Game(AgentContainer container, int rounds, int numPlayers) {
+        this.maxRounds = rounds;
+        this.currentRound = 1;
+        this.numPlayers = numPlayers;
+        this.currentPlayer = 1;
+
+        this.islandPieces = new ArrayList<>();
         this.isOver = false;
-        palaces = new ArrayList<Palace>();
-        players = new ArrayList<Player>();
-        for(int i = 0; i < 5; i++){
-            palaces.add(new Palace(i + 1));
+        players = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++) {
             try {
                 players.add(new Player(container, i + 1));
             } catch (StaleProxyException e) {
                 throw new RuntimeException(e);
             }
         }
-        this.round = Round.One;
-        this.turn = Turn.One;
+
         Object[] args = new Object[1];
         args[0] = this;
         try {
@@ -51,31 +44,38 @@ public class Game {
         } catch (StaleProxyException e) {
             throw new RuntimeException(e);
         }
-        //this.setVisible(true);
     }
-
-    public boolean isOver() {return isOver;}
 
     private void nextRound() {
-        if(this.round == Round.Five){
-            this.round = Round.One;
-        }
-        else{
-            this.round = Round.values()[round.ordinal() + 1];
+        if (this.currentRound == maxRounds) {
+            this.currentRound = 1;
+        } else {
+            this.currentRound++;
         }
     }
 
-    public Turn getTurn() {
-        return turn;
-    }
-
-    public void nextTurn(){
-        if(this.turn == Turn.Five){
-            this.turn = Turn.One;
+    public void nextTurn() {
+        if (this.currentPlayer == this.numPlayers) {
+            this.currentPlayer = 1;
             nextRound();
+        } else {
+            this.currentPlayer++;
         }
-        else{
-            this.turn = Turn.values()[turn.ordinal() + 1];
-        }
+    }
+
+    public boolean isOver() {
+        return isOver;
+    }
+
+    public int getCurrentRound() {
+        return currentRound;
+    }
+
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public ArrayList<Piece> getIslandPieces() {
+        return islandPieces;
     }
 }
