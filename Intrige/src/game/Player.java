@@ -1,42 +1,66 @@
 package game;
 
-import agents.IntrigeAgent;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
-import static game.Piece.Job.*;
+
+import static config.Config.*;
 
 
-public class Player {
+public class Player implements Comparable<Player> {
+    private final int id;
     private int money;
-    private  AgentController agent;
-    private ArrayList<Piece> pieces;
+    private final AgentController agent;
+    private final ArrayList<Piece> pieces;
+    private final Palace palace;
 
-    public void setMoney(int money) {
-        this.money = money;
+    public Player(AgentContainer container, int id) throws StaleProxyException {
+        this.id = id;
+        this.money = STARTING_MONEY;
+        this.pieces = new ArrayList<>();
+        this.palace = new Palace();
+
+        for (int i = 0; i < NUM_SCRIBES_PER_PLAYER; i++) {
+            pieces.add(new Piece(Piece.Job.Scribe, this));
+        }
+        for (int i = 0; i < NUM_MINISTERS_PER_PLAYER; i++) {
+            pieces.add(new Piece(Piece.Job.Minister, this));
+        }
+        for (int i = 0; i < NUM_ALCHEMISTS_PER_PLAYER; i++) {
+            pieces.add(new Piece(Piece.Job.Alchemist, this));
+        }
+        for (int i = 0; i < NUM_HEALERS_PER_PLAYER; i++) {
+            pieces.add(new Piece(Piece.Job.Healer, this));
+        }
+
+        String agentName = "player" + this.id;
+        Object[] args = new Object[1];
+        args[0] = this.id;
+
+        agent = container.createNewAgent(agentName, "agents.IntrigeAgent", args);
+        agent.start();
+    }
+
+    public void increaseMoney(int amount) {
+        this.money += amount;
     }
 
     public int getMoney() {
         return money;
     }
 
-    public Player(AgentContainer container, int id) throws StaleProxyException {
-        this.money = 32000;
-        this.pieces = new ArrayList<Piece>();
-        for(int i = 0; i < 2; i++){
-            this.pieces.add(new Piece(Scribe, this));
-            this.pieces.add(new Piece(Minister, this));
-            this.pieces.add(new Piece(Alchemist, this));
-            this.pieces.add(new Piece(Healer, this));
+    public Palace getPalace() {
+        return palace;
+    }
 
-        }
-        String agentName = "player" + id;
-        Object[] args = new Object[1];
-        args[0] = id;
+    public int getId() {
+        return id;
+    }
 
-        agent = container.createNewAgent(agentName, "agents.IntrigeAgent", args);
-        agent.start();
+    @Override
+    public int compareTo(Player o) {
+        return this.id - o.id;
     }
 }

@@ -8,11 +8,15 @@ public class Phases {
         ConflictResolution,
         Negotiation
     }
+
     private phase currentPhase;
 
+    public Phases() {
+        currentPhase = phase.CollectIncome;
+    }
 
-    private void nextPhase(){
-        switch(currentPhase){
+    private void nextPhase() {
+        switch (currentPhase) {
             case CollectIncome:
                 currentPhase = phase.AssignJobs;
                 break;
@@ -28,8 +32,8 @@ public class Phases {
         }
     }
 
-    public void playPhase(Player player){
-        switch(currentPhase){
+    public void playPhase(Player player) {
+        switch (currentPhase) {
             case CollectIncome:
                 collectIncome(player);
                 break;
@@ -45,23 +49,17 @@ public class Phases {
         }
         nextPhase();
     }
-    protected void collectIncome(Player player)
-    {
-        player.setMoney(player.getMoney() + 10000);
+
+    protected void collectIncome(Player player) {
+        player.increaseMoney(10000);
     }
 
-    protected void assignJobs(){}
-
-    protected void conflictResolution(){// might be a boolean function
+    protected void assignJobs() {
     }
 
-    protected void negotiation(){}
+    protected void conflictResolution() {// might be a boolean function
+    }
 
-    public Phases(){
-        currentPhase = phase.CollectIncome;
+    protected void negotiation() {
     }
 }
-
-/*
-collect income, assign jobs, conflict resolution, negotiation
- */
