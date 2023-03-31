@@ -41,7 +41,7 @@ public class Player implements Comparable<Player> {
 
         // TODO Initialize right agent
         agent = null;
-        //agent = container.createNewAgent(agentName, "agents.IntrigeAgent", args);
+        //agent = container.createNewAgent(agentName, "agents.IntrigueAgent", args);
         //agent.start();
     }
 

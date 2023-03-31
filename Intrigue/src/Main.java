@@ -8,7 +8,7 @@ public class Main {
 
         Profile profile = new ProfileImpl();
         profile.setParameter(Profile.GUI, "true");
-        profile.setParameter(Profile.CONTAINER_NAME, "Intrige");
+        profile.setParameter(Profile.CONTAINER_NAME, "Intrigue");
         AgentContainer gameContainer = jade.core.Runtime.instance().createMainContainer(profile);
         new Game(gameContainer);
     }

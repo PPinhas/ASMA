@@ -10,9 +10,9 @@ import jade.core.behaviours.CyclicBehaviour;
 import static config.Messages.*;
 
 /**
- * Abstract class for all Intrige agents. All subclasses should only declare the behaviours they want to use.
+ * Abstract class for all Intrigue agents. All subclasses should only declare the behaviours they want to use.
  */
-public abstract class IntrigeAgent extends Agent {
+public abstract class IntrigueAgent extends Agent {
     private int id;
 
     protected void setup() {
