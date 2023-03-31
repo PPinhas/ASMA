@@ -1,18 +1,16 @@
 package game;
 
 import jade.wrapper.AgentContainer;
-import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
 
-import static config.Config.*;
+import static config.GameConfig.*;
 
 
 public class Player implements Comparable<Player> {
     private final int id;
     private int money;
-    private final AgentController agent;
     private final ArrayList<Piece> pieces;
     private final Palace palace;
 
@@ -40,12 +38,9 @@ public class Player implements Comparable<Player> {
         args[0] = this.id;
 
         // TODO Initialize right agent
-        agent = null;
-        //agent = container.createNewAgent(agentName, "agents.IntrigueAgent", args);
-        //agent.start();
     }
 
-    public void increaseMoney(int amount) {
+    public void moneyTransaction(int amount) {
         this.money += amount;
     }
 
@@ -64,5 +59,9 @@ public class Player implements Comparable<Player> {
     @Override
     public int compareTo(Player o) {
         return this.id - o.id;
+    }
+
+    public ArrayList<Piece> getPieces() {
+        return pieces;
     }
 }

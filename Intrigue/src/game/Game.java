@@ -6,8 +6,8 @@ import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
 
-import static config.Config.NUM_PLAYERS;
-import static config.Config.NUM_ROUNDS;
+import static config.GameConfig.NUM_PLAYERS;
+import static config.GameConfig.NUM_ROUNDS;
 
 public class Game {
     private int currentRound;
@@ -15,17 +15,15 @@ public class Game {
     private boolean isOver;
 
     private final ArrayList<Player> players;
-    private int currentPlayer;
+    private int currentPlayerIdx;
     private final int numPlayers;
     private final ArrayList<Piece> islandPieces;
-
-    private final AgentController agent;
 
     public Game(AgentContainer container) {
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
-        this.currentPlayer = (int) (Math.random() * this.numPlayers) + 1;
+        this.currentPlayerIdx = (int) (Math.random() * this.numPlayers) + 1;
 
         this.islandPieces = new ArrayList<>();
         this.isOver = false;
@@ -42,8 +40,8 @@ public class Game {
         Object[] args = new Object[1];
         args[0] = this;
         try {
-            this.agent = container.createNewAgent("GameMaster", "agents.GameMaster", args);
-            this.agent.start();
+            AgentController agent = container.createNewAgent("GameMaster", "agents.GameMaster", args);
+            agent.start();
         } catch (StaleProxyException e) {
             throw new RuntimeException(e);
         }
@@ -70,24 +68,40 @@ public class Game {
     }
 
     public void nextTurn() {
-        if (this.currentPlayer == this.numPlayers) {
-            this.currentPlayer = 1;
+        if (this.currentPlayerIdx == this.numPlayers) {
+            this.currentPlayerIdx = 1;
             nextRound();
         } else {
-            this.currentPlayer++;
+            this.currentPlayerIdx++;
         }
     }
 
     public void collectIncome() {
-        for (Player player : this.players) {
-            Palace palace = player.getPalace();
-            for (Palace.Card card : palace.getCards()) {
-                Piece piece = card.getPiece();
-                if (piece != null) {
-                    piece.getPlayer().increaseMoney(card.getValue());
-                }
+        Palace palace = this.players.get(this.currentPlayerIdx).getPalace();
+        for (Palace.Card card : palace.getCards()) {
+            Piece piece = card.getPiece();
+            if (piece != null) {
+                piece.getPlayer().moneyTransaction(card.getValue());
             }
         }
+    }
+
+    public void assignJob(int pieceIdx, int cardIndex) {
+        Palace palace = this.getCurrentPlayer().getPalace();
+        Piece replacedPiece = palace.assignPiece(pieceIdx, cardIndex);
+        if (replacedPiece != null) {
+            this.getIslandPieces().add(replacedPiece);
+        }
+    }
+
+    public void seekJob(int playerIdx, int pieceIndex) {
+        Piece piece = this.getCurrentPlayer().getPieces().remove(pieceIndex);
+        this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
+    }
+
+    public void transferBribe(int playerIdx, int amount) {
+        this.getCurrentPlayer().moneyTransaction(amount);
+        this.getPlayers().get(playerIdx).moneyTransaction(-amount);
     }
 
     public boolean isOver() {
@@ -98,11 +112,36 @@ public class Game {
         return currentRound;
     }
 
-    public int getCurrentPlayer() {
-        return currentPlayer;
+    public int getCurrentPlayerIdx() {
+        return currentPlayerIdx;
+    }
+
+    public Player getCurrentPlayer() {
+        return this.players.get(this.currentPlayerIdx - 1);
     }
 
     public ArrayList<Piece> getIslandPieces() {
         return islandPieces;
+    }
+
+    public int getMaxRounds() {
+        return maxRounds;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public Player getPlayerById(int id) {
+        for (Player player : this.players) {
+            if (player.getId() == id) {
+                return player;
+            }
+        }
+        return null;
     }
 }

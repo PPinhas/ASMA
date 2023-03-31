@@ -51,7 +51,7 @@ public class Phases {
     }
 
     protected void collectIncome(Player player) {
-        player.increaseMoney(10000);
+        player.moneyTransaction(10000);
     }
 
     protected void assignJobs() {

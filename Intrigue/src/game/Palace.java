@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import static config.Config.PALACE_CARD_VALUES;
+import static config.GameConfig.PALACE_CARD_VALUES;
 
 public class Palace {
 
@@ -96,9 +96,22 @@ public class Palace {
         this.parkPieces.add(piece);
     }
 
-    public void assignPiece(Piece piece, Card card) {
-        // TODO need to handle the piece that is replaced
+    /**
+     * Assign a piece to a card and returns the piece that was replaced
+     */
+    public Piece assignPiece(Piece piece, Card card) {
+        Piece replacedPiece = card.getPiece();
         card.setPiece(piece);
         this.parkPieces.remove(piece);
+        return replacedPiece;
+    }
+
+    /**
+     * Assign a piece to a card and returns the piece that was replaced (by index)
+     */
+    public Piece assignPiece(int pieceIndex, int cardIndex) {
+        Piece piece = this.parkPieces.get(pieceIndex);
+        Card card = this.cards.get(cardIndex);
+        return this.assignPiece(piece, card);
     }
 }
