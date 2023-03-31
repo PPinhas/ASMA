@@ -39,8 +39,10 @@ public class Player implements Comparable<Player> {
         Object[] args = new Object[1];
         args[0] = this.id;
 
-        agent = container.createNewAgent(agentName, "agents.IntrigeAgent", args);
-        agent.start();
+        // TODO Initialize right agent
+        agent = null;
+        //agent = container.createNewAgent(agentName, "agents.IntrigeAgent", args);
+        //agent.start();
     }
 
     public void increaseMoney(int amount) {

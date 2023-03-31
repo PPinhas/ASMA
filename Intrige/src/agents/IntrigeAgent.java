@@ -1,32 +1,44 @@
 package agents;
 
-import behaviours.PlayTurn;
-import behaviours.WaitForTurn;
+import behaviours.WaitForAction;
+import behaviours.assign.AssignJobs;
+import behaviours.bribe.ResolveConflict;
+import behaviours.seek.SeekJobs;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 
-public class IntrigeAgent extends Agent {
-    private int id;
+import static config.Messages.*;
 
-    public IntrigeAgent() {
-        super();
-    }
+/**
+ * Abstract class for all Intrige agents. All subclasses should only declare the behaviours they want to use.
+ */
+public abstract class IntrigeAgent extends Agent {
+    private int id;
 
     protected void setup() {
         System.out.println("Agent " + getAID().getName() + " is ready.");
         Object[] args = getArguments();
-        id = (int) args[0];
-        CyclicBehaviour waitForTurn = new WaitForTurn();
-        addBehaviour(waitForTurn);
-        while (!waitForTurn.done()) {
-            //do nothing
-        }
-        Behaviour playTurn = new PlayTurn();
-        addBehaviour(playTurn);
+        this.id = (int) args[0];
+
+        CyclicBehaviour waitForAction = new WaitForAction();
+        addBehaviour(waitForAction);
     }
 
     protected void takeDown() {
         System.out.println("Agent " + getAID().getName() + " is shutting down.");
     }
+
+    public void handleAction(String action) {
+        switch (action) {
+            case ASSIGN_MESSAGE -> addBehaviour(getAssignJobsBehaviour());
+            case SEEK_MESSAGE -> addBehaviour(getSeekJobsBehaviour());
+            case RESOLVE_MESSAGE -> addBehaviour(getResolveConflictBehaviour());
+        }
+    }
+
+    protected abstract AssignJobs getAssignJobsBehaviour();
+
+    protected abstract SeekJobs getSeekJobsBehaviour();
+
+    protected abstract ResolveConflict getResolveConflictBehaviour();
 }
