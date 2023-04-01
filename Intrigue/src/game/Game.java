@@ -104,6 +104,14 @@ public class Game {
         this.getPlayers().get(playerIdx).moneyTransaction(-amount);
     }
 
+    public void banishWaitingPieces() {
+        Palace palace = this.getCurrentPlayer().getPalace();
+        for (int i = 0; i < palace.getParkPieces().size(); i++) {
+            Piece piece = palace.getParkPieces().remove(i);
+            this.islandPieces.add(piece);
+        }
+    }
+
     public boolean isOver() {
         return isOver;
     }

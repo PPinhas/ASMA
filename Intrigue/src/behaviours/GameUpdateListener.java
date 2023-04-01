@@ -2,10 +2,14 @@ package behaviours;
 
 import agents.InformedAgent;
 import config.Protocols;
+import config.messages.BribeOffered;
+import config.messages.EmployeesSent;
+import config.messages.JobsAssigned;
 import game.Game;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 
 public class GameUpdateListener extends CyclicBehaviour {
     private final Game game;
@@ -44,43 +48,40 @@ public class GameUpdateListener extends CyclicBehaviour {
      * Handle the message sent when jobs are assigned by the current player.
      */
     private void handleJobsAssigned(ACLMessage msg) {
-        String[] info = msg.getContent().split("\n");
-        if (info.length != 2) {
+        JobsAssigned info;
+        try {
+            info = (JobsAssigned) msg.getContentObject();
+        } catch (UnreadableException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (info.selectedPieceIndices().size() != info.cardIndices().size()) {
             throw new RuntimeException("Invalid message content( " + msg.getProtocol() + "):\n" + msg.getContent());
         }
 
-        String[] pieceIndices = info[0].split(" ");
-        String[] cardIndices = info[1].split(" ");
-        if (pieceIndices.length != cardIndices.length) { // TODO Consider banished pieces
-            throw new RuntimeException("Invalid message content( " + msg.getProtocol() + "):\n" + msg.getContent());
+        for (int i = 0; i < info.selectedPieceIndices().size(); i++) {
+            this.game.assignJob(info.selectedPieceIndices().get(i), info.cardIndices().get(i));
         }
-
-        for (int i = 0; i < pieceIndices.length; i++) {
-            int pieceIndex = Integer.parseInt(pieceIndices[i]);
-            int cardIndex = Integer.parseInt(cardIndices[i]);
-            this.game.assignJob(pieceIndex, cardIndex);
-        }
+        this.game.banishWaitingPieces();
     }
 
     /**
      * Handle the message sent when employees are sent by the current player.
      */
     private void handleEmployeesSent(ACLMessage msg) {
-        String[] info = msg.getContent().split("\n");
-        if (info.length != 2) {
+        EmployeesSent info;
+        try {
+            info = (EmployeesSent) msg.getContentObject();
+        } catch (UnreadableException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (info.pieceIndices().size() != info.playerIndices().size()) {
             throw new RuntimeException("Invalid message content( " + msg.getProtocol() + "):\n" + msg.getContent());
         }
 
-        String[] pieceIndices = info[0].split(" ");
-        String[] playerIndices = info[1].split(" ");
-        if (pieceIndices.length != playerIndices.length) {
-            throw new RuntimeException("Invalid message content( " + msg.getProtocol() + "):\n" + msg.getContent());
-        }
-
-        for (int i = 0; i < pieceIndices.length; i++) {
-            int pieceIndex = Integer.parseInt(pieceIndices[i]);
-            int playerIndex = Integer.parseInt(playerIndices[i]);
-            this.game.seekJob(pieceIndex, playerIndex);
+        for (int i = 0; i < info.pieceIndices().size(); i++) {
+            this.game.seekJob(info.playerIndices().get(i), info.pieceIndices().get(i));
         }
     }
 
@@ -88,13 +89,13 @@ public class GameUpdateListener extends CyclicBehaviour {
      * Handle the message sent when a bribe is offered to the current player.
      */
     private void handleBribeOffered(ACLMessage msg) {
-        String[] info = msg.getContent().split("\n");
-        if (info.length != 2) {
-            throw new RuntimeException("Invalid message content( " + msg.getProtocol() + "):\n" + msg.getContent());
+        BribeOffered info;
+        try {
+            info = (BribeOffered) msg.getContentObject();
+        } catch (UnreadableException e) {
+            throw new RuntimeException(e);
         }
 
-        int playerIndex = Integer.parseInt(info[0]);
-        int amount = Integer.parseInt(info[1]);
-        this.game.transferBribe(playerIndex, amount);
+        this.game.transferBribe(info.playerIdx(), info.amount());
     }
 }
