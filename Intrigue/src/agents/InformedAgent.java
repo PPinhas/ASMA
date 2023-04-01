@@ -21,12 +21,12 @@ public abstract class InformedAgent extends Agent {
         Object[] args = getArguments();
         this.game = (Game) args[0];
 
-        DFAgentDescription dfd = this.registerAgent();
-        addBehaviour(new AgentFinder(this, dfd));
+        this.registerAgent();
+        this.subscribeToFindAgents();
         addBehaviour(new GameUpdateListener(this));
     }
 
-    private DFAgentDescription registerAgent() {
+    private void registerAgent() {
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(getAID());
 
@@ -40,8 +40,14 @@ public abstract class InformedAgent extends Agent {
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
+    }
 
-        return dfd;
+    private void subscribeToFindAgents() {
+        DFAgentDescription dfd = new DFAgentDescription();
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType("intrigue-updates");
+        dfd.addServices(sd);
+        addBehaviour(new AgentFinder(this, dfd));
     }
 
     protected void takeDown() {

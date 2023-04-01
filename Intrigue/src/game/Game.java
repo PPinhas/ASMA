@@ -31,7 +31,7 @@ public class Game {
 
         for (int i = 0; i < this.numPlayers; i++) {
             try {
-                this.players.add(new Player(container, i + 1));
+                this.players.add(new Player(container, i + 1, this));
             } catch (StaleProxyException e) {
                 throw new RuntimeException(e);
             }

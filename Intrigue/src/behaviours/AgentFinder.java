@@ -16,16 +16,22 @@ public class AgentFinder extends SubscriptionInitiator {
     public AgentFinder(InformedAgent informedAgent, DFAgentDescription dfad) {
         super(informedAgent, DFService.createSubscriptionMessage(informedAgent, informedAgent.getDefaultDF(), dfad, null));
         this.agents = informedAgent.getAgents();
+
+        try {
+            DFAgentDescription[] result = DFService.search(informedAgent, dfad);
+            for (DFAgentDescription dfd : result) {
+                this.addAgent(dfd);
+            }
+        } catch (FIPAException fe) {
+            fe.printStackTrace();
+        }
     }
 
     protected void handleInform(ACLMessage inform) {
         try {
-            DFAgentDescription[] dfds = DFService.decodeNotification(inform.getContent());
-            for (DFAgentDescription dfd : dfds) {
-                AID agent = dfd.getName();
-                if (!this.containsAgent(agent)) {
-                    this.agents.add(agent);
-                }
+            DFAgentDescription[] newAgents = DFService.decodeNotification(inform.getContent());
+            for (DFAgentDescription dfd : newAgents) {
+                this.addAgent(dfd);
             }
         } catch (FIPAException fe) {
             fe.printStackTrace();
@@ -39,5 +45,13 @@ public class AgentFinder extends SubscriptionInitiator {
             }
         }
         return false;
+    }
+
+    private void addAgent(DFAgentDescription dfd) {
+        AID agent = dfd.getName();
+        if (!this.containsAgent(agent) && !agent.getName().equals(this.myAgent.getName())) {
+            System.out.println("New agent in town: " + agent.getLocalName() + " (from " + this.myAgent.getLocalName() + ")");
+            this.agents.add(agent);
+        }
     }
 }
