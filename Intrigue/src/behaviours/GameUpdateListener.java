@@ -1,6 +1,6 @@
 package behaviours;
 
-import agents.IntrigueAgent;
+import agents.InformedAgent;
 import config.Protocols;
 import game.Game;
 import jade.core.behaviours.CyclicBehaviour;
@@ -19,8 +19,8 @@ public class GameUpdateListener extends CyclicBehaviour {
             Protocols.BRIBE_OFFERED
     );
 
-    public GameUpdateListener(IntrigueAgent intrigueAgent) {
-        this.game = intrigueAgent.getGame();
+    public GameUpdateListener(InformedAgent informedAgent) {
+        this.game = informedAgent.getGame();
     }
 
     @Override

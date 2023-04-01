@@ -1,16 +1,11 @@
 package agents;
 
 import behaviours.TurnMaster;
-import game.Game;
-import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 
-public class GameMaster extends Agent {
-
+public class GameMaster extends InformedAgent {
     protected void setup() {
-        Object[] args = getArguments();
-        Game game = (Game) args[0];
-        System.out.println(getAID().getName() + " is ready.");
+        super.setup();
 
         while (!game.isOver()) {
             System.out.println("Starting turn with player " + (game.getCurrentPlayerIdx() + 1));
@@ -23,9 +18,4 @@ public class GameMaster extends Agent {
             System.out.println("Turn is over.");
         }
     }
-
-    protected void takeDown() {
-        System.out.println(getAID().getName() + " is shutting down.");
-    }
-
 }
