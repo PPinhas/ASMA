@@ -58,7 +58,7 @@ public class Player implements Comparable<Player> {
 
     @Override
     public int compareTo(Player o) {
-        return this.id - o.id;
+        return Integer.compare(this.id, o.id);
     }
 
     public ArrayList<Piece> getPieces() {

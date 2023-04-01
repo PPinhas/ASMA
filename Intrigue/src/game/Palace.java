@@ -1,8 +1,10 @@
 package game;
 
+import game.conflict.ExternalConflict;
+import game.conflict.InternalConflict;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.TreeSet;
 
 import static config.GameConfig.PALACE_CARD_VALUES;
 
@@ -46,42 +48,55 @@ public class Palace {
         }
     }
 
-    public HashMap<Piece.Job, ArrayList<Player>> getInternalConflicts() {
-        HashMap<Piece.Job, ArrayList<Player>> playersPerJob = new HashMap<>();
+    public TreeSet<InternalConflict> getInternalConflicts() {
+        TreeSet<InternalConflict> internalConflicts = new TreeSet<>();
         for (Card card : cards) {
             Piece piece = card.getPiece();
             if (piece == null) continue;
 
-            ArrayList<Player> conflicts = new ArrayList<>();
+            InternalConflict conflict = new InternalConflict(piece.getJob(), card.getValue(), piece.getPlayer());
             for (Piece parkPiece : parkPieces) {
                 if (parkPiece.getJob() == piece.getJob()) {
-                    conflicts.add(parkPiece.getPlayer());
+                    conflict.addPlayer(parkPiece.getPlayer());
                 }
             }
-            if (conflicts.size() == 0) continue;
 
-            Collections.sort(conflicts);
-            conflicts.add(0, piece.getPlayer());
-            playersPerJob.put(piece.getJob(), conflicts);
+            if (conflict.getPlayers().size() == 0) continue;
+            internalConflicts.add(conflict);
         }
 
-        return playersPerJob;
+        return internalConflicts;
     }
 
-    public HashMap<Piece.Job, ArrayList<Player>> getExternalConflicts() {
-        HashMap<Piece.Job, ArrayList<Player>> playersPerJob = new HashMap<>();
-        for (Piece piece : parkPieces) {
-            if (!playersPerJob.containsKey(piece.getJob())) {
-                playersPerJob.put(piece.getJob(), new ArrayList<>());
-            }
-            playersPerJob.get(piece.getJob()).add(piece.getPlayer());
+    public ArrayList<ExternalConflict> getExternalConflicts() {
+        ArrayList<Piece.Job> takenJobs = new ArrayList<>();
+        for (Card card : cards) {
+            Piece piece = card.getPiece();
+            if (piece != null) takenJobs.add(piece.getJob());
         }
 
-        playersPerJob.values().stream()
-                .filter(players -> players.size() == 1)
-                .forEach(Collections::sort);
+        ArrayList<ExternalConflict> externalConflicts = new ArrayList<>();
+        for (Piece piece : parkPieces) {
+            if (takenJobs.contains(piece.getJob())) continue;
 
-        return playersPerJob;
+            boolean newConflict = true;
+            for (ExternalConflict conflict : externalConflicts) {
+                if (conflict.getJob() == piece.getJob()) {
+                    conflict.addPlayer(piece.getPlayer());
+                    newConflict = false;
+                    break;
+                }
+            }
+
+            if (newConflict) {
+                ExternalConflict conflict = new ExternalConflict(piece.getJob());
+                conflict.addPlayer(piece.getPlayer());
+                externalConflicts.add(conflict);
+            }
+        }
+
+        externalConflicts.removeIf(conflict -> conflict.getPlayers().size() <= 1);
+        return externalConflicts;
     }
 
     public ArrayList<Piece> getParkPieces() {

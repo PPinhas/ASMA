@@ -1,31 +1,46 @@
 package behaviours.assign;
 
+import agents.IntrigueAgent;
+import game.Game;
+import game.Palace;
+import game.conflict.ExternalConflict;
+import game.conflict.InternalConflict;
 import jade.core.behaviours.Behaviour;
+
+import java.util.ArrayList;
+import java.util.TreeSet;
 
 public abstract class AssignJobs extends Behaviour {
 
-    // Constructor
-    public AssignJobs() {
+    private final Game game;
+    private final ArrayList<ExternalConflict> externalConflicts = new ArrayList<>();
+    private final TreeSet<InternalConflict> internalConflicts = new TreeSet<>();
+
+    public AssignJobs(IntrigueAgent intrigueAgent) {
+        this.game = intrigueAgent.getGame();
     }
 
-    // This method is called when the behavior starts
     public void onStart() {
-        System.out.println("Starting assign jobs");
+        Palace palace = game.getCurrentPlayer().getPalace();
+        externalConflicts.addAll(palace.getExternalConflicts());
+        internalConflicts.addAll(palace.getInternalConflicts());
     }
 
-    // This method is called repeatedly until the behavior is finished
     public void action() {
-        // TODO Receive state and re-send it to master after assigning? Or send it to the player?
-        System.out.println("Performing assign jobs");
+        if (!externalConflicts.isEmpty()) {
+            // TODO handle external conflicts
+        } else if (!internalConflicts.isEmpty()) {
+            // TODO handle internal conflicts
+        } else {
+            // TODO abstract decision of assigning jobs, broadcast result
+        }
     }
 
-    // This method is called when the behavior is finished
     public int onEnd() {
         System.out.println("Ending assign jobs");
         return 0;
     }
 
-    // This method is called to determine whether the behavior is finished
     public boolean done() {
         return false; // This behavior never finishes
     }

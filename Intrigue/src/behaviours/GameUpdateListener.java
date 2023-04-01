@@ -51,7 +51,7 @@ public class GameUpdateListener extends CyclicBehaviour {
 
         String[] pieceIndices = info[0].split(" ");
         String[] cardIndices = info[1].split(" ");
-        if (pieceIndices.length != cardIndices.length) {
+        if (pieceIndices.length != cardIndices.length) { // TODO Consider banished pieces
             throw new RuntimeException("Invalid message content( " + msg.getProtocol() + "):\n" + msg.getContent());
         }
 
