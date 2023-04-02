@@ -1,13 +1,13 @@
 package agents;
 
-import behaviours.assign.AssignJobs;
-import behaviours.bribe.ResolveConflict;
+import behaviours.assign.AssignJobsPhase;
+import behaviours.bribe.GiveBribe;
 import behaviours.seek.SeekJobs;
 
 // TODO Delete later
 public class DummyAgent extends IntrigueAgent {
     @Override
-    protected AssignJobs getAssignJobsBehaviour() {
+    protected AssignJobsPhase getAssignJobsBehaviour() {
         return null;
     }
 
@@ -17,7 +17,7 @@ public class DummyAgent extends IntrigueAgent {
     }
 
     @Override
-    protected ResolveConflict getResolveConflictBehaviour() {
+    protected GiveBribe getResolveConflictBehaviour() {
         return null;
     }
 }

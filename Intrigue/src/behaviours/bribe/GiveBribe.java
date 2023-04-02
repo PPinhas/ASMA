@@ -2,10 +2,10 @@ package behaviours.bribe;
 
 import jade.core.behaviours.Behaviour;
 
-public abstract class ResolveConflict extends Behaviour {
+public abstract class GiveBribe extends Behaviour {
 
     // Constructor
-    public ResolveConflict() {
+    public GiveBribe() {
     }
 
     // This method is called when the behavior starts

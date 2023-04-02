@@ -8,14 +8,15 @@ public class WaitForAction extends CyclicBehaviour {
     private final IntrigueAgent intrigueAgent;
 
     public WaitForAction(IntrigueAgent intrigueAgent) {
+        super(intrigueAgent);
         this.intrigueAgent = intrigueAgent;
     }
 
     public void action() {
         ACLMessage msg = myAgent.receive();
         if (msg != null) {
-            // TODO how to get game state and reply to master from new behaviour
-            String content = msg.getContent();
+            // TODO do something with content, maybe pass message
+            String content = msg.getProtocol();
             intrigueAgent.handleAction(content);
         } else {
             // block the behavior until a message is received

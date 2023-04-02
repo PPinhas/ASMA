@@ -24,6 +24,7 @@ public class GameUpdateListener extends CyclicBehaviour {
     );
 
     public GameUpdateListener(InformedAgent informedAgent) {
+        super(informedAgent);
         this.game = informedAgent.getGame();
     }
 

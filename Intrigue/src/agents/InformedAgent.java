@@ -61,4 +61,22 @@ public abstract class InformedAgent extends Agent {
     public ArrayList<AID> getAgents() {
         return agents;
     }
+
+    public AID getAgentByPlayerId(int playerId) {
+        for (AID agent : agents) {
+            if (agent.getLocalName().equals("player" + playerId)) {
+                return agent;
+            }
+        }
+        return null;
+    }
+
+    public AID getGameMasterAgent() {
+        for (AID agent : agents) {
+            if (agent.getLocalName().equals("GameMaster")) {
+                return agent;
+            }
+        }
+        return null;
+    }
 }

@@ -1,8 +1,8 @@
 package agents;
 
 import behaviours.WaitForAction;
-import behaviours.assign.AssignJobs;
-import behaviours.bribe.ResolveConflict;
+import behaviours.assign.AssignJobsPhase;
+import behaviours.bribe.GiveBribe;
 import behaviours.seek.SeekJobs;
 
 import static config.Protocols.*;
@@ -29,11 +29,11 @@ public abstract class IntrigueAgent extends InformedAgent {
         }
     }
 
-    protected abstract AssignJobs getAssignJobsBehaviour();
+    protected abstract AssignJobsPhase getAssignJobsBehaviour();
 
     protected abstract SeekJobs getSeekJobsBehaviour();
 
-    protected abstract ResolveConflict getResolveConflictBehaviour();
+    protected abstract GiveBribe getResolveConflictBehaviour();
 
     public int getId() {
         return id;
