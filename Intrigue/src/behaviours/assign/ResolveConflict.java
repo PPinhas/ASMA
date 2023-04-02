@@ -58,6 +58,7 @@ public abstract class ResolveConflict extends SequentialBehaviour {
                 reply = intrigueAgent.blockingReceive();
             } while (!reply.getSender().getLocalName().equals(receiver.getLocalName()) || !reply.getProtocol().equals(Protocols.BRIBE_OFFERED));
 
+            // TODO Check if we can read the same message here and in GameUpdateListener. Otherwise, we need to send 2 messages in GiveBribe behaviour.
             BribeOffered bribeOffered;
             try {
                 bribeOffered = (BribeOffered) reply.getContentObject();

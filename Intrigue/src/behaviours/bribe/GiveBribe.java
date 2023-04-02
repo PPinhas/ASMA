@@ -1,32 +1,30 @@
 package behaviours.bribe;
 
-import jade.core.behaviours.Behaviour;
+import agents.IntrigueAgent;
+import behaviours.BehaviourUtils;
+import config.Protocols;
+import config.messages.BribeOffered;
+import game.Game;
+import game.Player;
+import jade.core.behaviours.OneShotBehaviour;
+import jade.lang.acl.ACLMessage;
 
-public abstract class GiveBribe extends Behaviour {
+public abstract class GiveBribe extends OneShotBehaviour {
 
-    // Constructor
-    public GiveBribe() {
+    protected final Game game;
+    protected final IntrigueAgent intrigueAgent;
+
+    public GiveBribe(IntrigueAgent intrigueAgent) {
+        super(intrigueAgent);
+        this.intrigueAgent = intrigueAgent;
+        this.game = intrigueAgent.getGame();
     }
 
-    // This method is called when the behavior starts
-    public void onStart() {
-        System.out.println("Starting resolve conflict");
-    }
-
-    // This method is called repeatedly until the behavior is finished
     public void action() {
-        // TODO Negotiate with other players directly? Seems wrong to use GameMaster intermediate
-        System.out.println("Performing resolve conflict");
+        BribeOffered bribeOffered = offerBribe(game.getCurrentPlayer());
+        ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.BRIBE_OFFERED, bribeOffered, intrigueAgent.getAgents());
+        intrigueAgent.send(msg);
     }
 
-    // This method is called when the behavior is finished
-    public int onEnd() {
-        System.out.println("Ending resolve conflict");
-        return 0;
-    }
-
-    // This method is called to determine whether the behavior is finished
-    public boolean done() {
-        return false; // This behavior never finishes
-    }
+    protected abstract BribeOffered offerBribe(Player player);
 }
