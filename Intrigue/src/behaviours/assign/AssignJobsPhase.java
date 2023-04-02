@@ -21,7 +21,7 @@ public abstract class AssignJobsPhase extends SequentialBehaviour {
     }
 
     public void onStart() {
-        Palace palace = game.getCurrentPlayer().getPalace();
+        Palace palace = intrigueAgent.getOwnPlayer().getPalace();
         ArrayList<ExternalConflict> externalConflicts = palace.getExternalConflicts();
         TreeSet<InternalConflict> internalConflicts = palace.getInternalConflicts();
 

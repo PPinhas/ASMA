@@ -20,7 +20,7 @@ public abstract class AssignJobsDecision extends OneShotBehaviour {
     }
 
     public void action() {
-        Palace palace = game.getCurrentPlayer().getPalace();
+        Palace palace = intrigueAgent.getOwnPlayer().getPalace();
         JobsAssigned jobsAssigned = assignJobs(palace);
         if (jobsAssigned.selectedPieceIndices().isEmpty()) return;
 

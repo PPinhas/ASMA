@@ -4,6 +4,7 @@ import behaviours.WaitForAction;
 import behaviours.assign.AssignJobsPhase;
 import behaviours.bribe.GiveBribe;
 import behaviours.seek.SeekJobs;
+import game.Player;
 
 import static config.Protocols.*;
 
@@ -37,5 +38,9 @@ public abstract class IntrigueAgent extends InformedAgent {
 
     public int getId() {
         return id;
+    }
+
+    public Player getOwnPlayer() {
+        return game.getPlayerById(id);
     }
 }

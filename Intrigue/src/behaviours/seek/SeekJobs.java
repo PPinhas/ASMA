@@ -1,32 +1,33 @@
 package behaviours.seek;
 
-import jade.core.behaviours.Behaviour;
+import agents.IntrigueAgent;
+import behaviours.BehaviourUtils;
+import config.Protocols;
+import config.messages.EmployeesSent;
+import game.Game;
+import game.Player;
+import jade.core.behaviours.OneShotBehaviour;
+import jade.lang.acl.ACLMessage;
 
-public abstract class SeekJobs extends Behaviour {
+public abstract class SeekJobs extends OneShotBehaviour {
 
-    // Constructor
-    public SeekJobs() {
+    protected final Game game;
+    protected final IntrigueAgent intrigueAgent;
+
+    public SeekJobs(IntrigueAgent intrigueAgent) {
+        super(intrigueAgent);
+        this.intrigueAgent = intrigueAgent;
+        this.game = intrigueAgent.getGame();
     }
 
-    // This method is called when the behavior starts
-    public void onStart() {
-        System.out.println("Starting seeking jobs");
-    }
-
-    // This method is called repeatedly until the behavior is finished
     public void action() {
-        // TODO Receive state and re-send it to master after assigning? Or send it to the player?
-        System.out.println("Performing seeking jobs");
+        Player me = intrigueAgent.getOwnPlayer();
+        EmployeesSent employeesSent = seekJobs();
+        if (employeesSent.pieceIndices().isEmpty()) return; // Probably not possible
+
+        ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.EMPLOYEES_SENT, employeesSent, intrigueAgent.getAgents());
+        intrigueAgent.send(msg);
     }
 
-    // This method is called when the behavior is finished
-    public int onEnd() {
-        System.out.println("Ending seeking jobs");
-        return 0;
-    }
-
-    // This method is called to determine whether the behavior is finished
-    public boolean done() {
-        return false; // This behavior never finishes
-    }
+    public abstract EmployeesSent seekJobs();
 }
