@@ -41,7 +41,7 @@ public class Player implements Comparable<Player> {
 
         // TODO Initialize right agent
         try {
-            AgentController agent = container.createNewAgent(agentName, "agents.DummyAgent", args);
+            AgentController agent = container.createNewAgent(agentName, "agents.RandomAgent", args);
             agent.start();
         } catch (StaleProxyException e) {
             throw new RuntimeException(e);

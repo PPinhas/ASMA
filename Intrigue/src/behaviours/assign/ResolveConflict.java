@@ -32,6 +32,7 @@ public abstract class ResolveConflict extends SequentialBehaviour {
         for (Player player : conflict.getPlayers()) {
             this.addSubBehaviour(new AskForBribe(intrigueAgent, player));
         }
+        // TODO Ensure if there are no race conditions, since we need our own message to update the game.
         this.addSubBehaviour(new AssignJobs(intrigueAgent));
     }
 

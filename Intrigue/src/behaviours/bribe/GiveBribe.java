@@ -5,7 +5,6 @@ import behaviours.BehaviourUtils;
 import config.Protocols;
 import config.messages.BribeOffered;
 import game.Game;
-import game.Player;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
@@ -21,10 +20,10 @@ public abstract class GiveBribe extends OneShotBehaviour {
     }
 
     public void action() {
-        BribeOffered bribeOffered = offerBribe(game.getCurrentPlayer());
+        BribeOffered bribeOffered = offerBribe(game.getCurrentPlayerIdx());
         ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.BRIBE_OFFERED, bribeOffered, intrigueAgent.getAgents());
         intrigueAgent.send(msg);
     }
 
-    protected abstract BribeOffered offerBribe(Player player);
+    protected abstract BribeOffered offerBribe(int playerIdx);
 }

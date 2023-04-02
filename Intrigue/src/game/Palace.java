@@ -129,4 +129,14 @@ public class Palace {
         Card card = this.cards.get(cardIndex);
         return this.assignPiece(piece, card);
     }
+
+    public ArrayList<Card> getEmptyCards() {
+        ArrayList<Card> emptyCards = new ArrayList<>();
+        for (Card card : cards) {
+            if (card.getPiece() == null) {
+                emptyCards.add(card);
+            }
+        }
+        return emptyCards;
+    }
 }

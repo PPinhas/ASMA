@@ -1,23 +1,25 @@
 package agents;
 
 import behaviours.assign.AssignJobsPhase;
+import behaviours.assign.random.AssignJobsPhaseRandom;
 import behaviours.bribe.GiveBribe;
+import behaviours.bribe.GiveRandomBribe;
+import behaviours.seek.RandomSeekJobs;
 import behaviours.seek.SeekJobs;
 
-// TODO Delete later
-public class DummyAgent extends IntrigueAgent {
+public class RandomAgent extends IntrigueAgent {
     @Override
     protected AssignJobsPhase getAssignJobsBehaviour() {
-        return null;
+        return new AssignJobsPhaseRandom(this);
     }
 
     @Override
     protected SeekJobs getSeekJobsBehaviour() {
-        return null;
+        return new RandomSeekJobs(this);
     }
 
     @Override
     protected GiveBribe getResolveConflictBehaviour() {
-        return null;
+        return new GiveRandomBribe(this);
     }
 }
