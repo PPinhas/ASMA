@@ -1,6 +1,6 @@
 package config;
 
-public class Config {
+public class GameConfig {
     public static final int NUM_ROUNDS = 5;
     public static final int NUM_PLAYERS = 5;
     public static final int STARTING_MONEY = 32000;

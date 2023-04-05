@@ -6,17 +6,16 @@ import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
 
-import static config.Config.*;
+import static config.GameConfig.*;
 
 
 public class Player implements Comparable<Player> {
     private final int id;
     private int money;
-    private final AgentController agent;
     private final ArrayList<Piece> pieces;
     private final Palace palace;
 
-    public Player(AgentContainer container, int id) throws StaleProxyException {
+    public Player(AgentContainer container, int id, Game game) throws StaleProxyException {
         this.id = id;
         this.money = STARTING_MONEY;
         this.pieces = new ArrayList<>();
@@ -36,14 +35,20 @@ public class Player implements Comparable<Player> {
         }
 
         String agentName = "player" + this.id;
-        Object[] args = new Object[1];
-        args[0] = this.id;
+        Object[] args = new Object[2];
+        args[0] = game;
+        args[1] = this.id;
 
-        agent = container.createNewAgent(agentName, "agents.IntrigeAgent", args);
-        agent.start();
+        // TODO Initialize right agent
+        try {
+            AgentController agent = container.createNewAgent(agentName, "agents.RandomAgent", args);
+            agent.start();
+        } catch (StaleProxyException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void increaseMoney(int amount) {
+    public void moneyTransaction(int amount) {
         this.money += amount;
     }
 
@@ -61,6 +66,10 @@ public class Player implements Comparable<Player> {
 
     @Override
     public int compareTo(Player o) {
-        return this.id - o.id;
+        return Integer.compare(this.id, o.id);
+    }
+
+    public ArrayList<Piece> getPieces() {
+        return pieces;
     }
 }
