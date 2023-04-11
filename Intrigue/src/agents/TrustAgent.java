@@ -1,5 +1,6 @@
 package agents;
 
+import behaviours.GameUpdateListener;
 import behaviours.assign.AssignJobsPhase;
 import behaviours.assign.trust.AssignJobsPhaseTrust;
 import behaviours.bribe.GiveBribe;
@@ -7,9 +8,14 @@ import behaviours.bribe.GiveBribeTrust;
 import behaviours.seek.SeekJobs;
 import behaviours.seek.SeekJobsTrust;
 import config.TrustAgentConfig;
+import config.messages.JobsAssigned;
 import config.messages.ResolveConflict;
+import game.Palace;
 import game.Player;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,5 +79,50 @@ public class TrustAgent extends IntrigueAgent {
         int trustFactor = trustFactors.get(player);
         trustFactor += change;
         trustFactors.put(player, trustFactor);
+    }
+
+    @Override
+    protected GameUpdateListener getGameUpdateListener() {
+        return new TrustGameUpdateListener(this);
+    }
+
+    private class TrustGameUpdateListener extends GameUpdateListener {
+        private final TrustAgent trustAgent;
+
+        public TrustGameUpdateListener(TrustAgent agent) {
+            super(agent);
+            this.trustAgent = agent;
+        }
+
+        @Override
+        protected void handleJobsAssigned(ACLMessage msg) {
+            super.handleJobsAssigned(msg);
+            JobsAssigned info;
+            try {
+                info = (JobsAssigned) msg.getContentObject();
+            } catch (UnreadableException e) {
+                throw new RuntimeException(e);
+            }
+
+            int myIndex = -1;
+            for (Integer i : info.selectedPieceOwners()) {
+                if (i == trustAgent.getId()) {
+                    myIndex = info.selectedPieceOwners().indexOf(i);
+                    break;
+                }
+            }
+
+            ArrayList<Palace.Card> cards = game.getCurrentPlayer().getPalace().getCards();
+            int jobValue = cards.get(info.cardIndices().get(myIndex)).getValue();
+
+            int totalValue = 0;
+            for (Integer i : info.cardIndices()) {
+                totalValue += cards.get(i).getValue();
+            }
+            int averageValue = totalValue / info.cardIndices().size();
+
+            int valueDiff = (int) Math.round((jobValue - averageValue) * config.assignedJobMultiplier());
+            trustAgent.changeTrustFactor(game.getCurrentPlayer(), valueDiff);
+        }
     }
 }
