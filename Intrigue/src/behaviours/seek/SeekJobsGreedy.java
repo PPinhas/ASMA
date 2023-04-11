@@ -31,9 +31,6 @@ public class SeekJobsGreedy extends SeekJobs {
         return new EmployeesSent(pieceIndices, playerIndices);
     }
 
-    /**
-     * @return index of the selected piece
-     */
     private void selectPieceAndPalace(ArrayList<Player> availablePlayers, ArrayList<Piece> availablePieces) {
         Piece chosenPiece = null;
         Player chosenPlayer = null;

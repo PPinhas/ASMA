@@ -98,7 +98,7 @@ public abstract class ResolveConflict extends SequentialBehaviour {
 
     protected Integer getCardIdxFromJob(Palace palace, Piece.Job job) {
         for (Palace.Card card : palace.getCards()) {
-            if (card.getPiece().getJob().equals(job)) {
+            if (card.getPiece() != null && card.getPiece().getJob().equals(job)) {
                 return palace.getCards().indexOf(card);
             }
         }

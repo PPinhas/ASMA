@@ -23,21 +23,21 @@ public class SeekJobsRandom extends SeekJobs {
         players.remove(intrigueAgent.getOwnPlayer());
 
         Random random = new Random();
-        selectRandomIndex(pieces, pieceIndices, random);
-        selectRandomIndex(players, playerIndices, random);
+        selectRandomIndex(pieces, intrigueAgent.getOwnPlayer().getPieces(), pieceIndices, random);
+        selectRandomIndex(players, intrigueAgent.getGame().getPlayers(), playerIndices, random);
 
         // try second employee
         if (pieces.isEmpty()) return new EmployeesSent(pieceIndices, playerIndices);
 
-        selectRandomIndex(pieces, pieceIndices, random);
-        selectRandomIndex(players, playerIndices, random);
+        selectRandomIndex(pieces, intrigueAgent.getOwnPlayer().getPieces(), pieceIndices, random);
+        selectRandomIndex(players, intrigueAgent.getGame().getPlayers(), playerIndices, random);
 
         return new EmployeesSent(pieceIndices, playerIndices);
     }
 
-    private <T> void selectRandomIndex(ArrayList<T> list, ArrayList<Integer> indexList, Random random) {
-        int index = random.nextInt(list.size());
-        indexList.add(index);
-        list.remove(index);
+    private <T> void selectRandomIndex(ArrayList<T> availableList, ArrayList<T> realList, ArrayList<Integer> indexList, Random random) {
+        int index = random.nextInt(availableList.size());
+        indexList.add(realList.indexOf(availableList.get(index)));
+        availableList.remove(index);
     }
 }
