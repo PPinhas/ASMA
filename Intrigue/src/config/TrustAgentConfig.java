@@ -1,4 +1,9 @@
 package config;
 
-public record TrustAgentConfig() {
+public record TrustAgentConfig(
+        int bribeMultiplier
+) {
+    public TrustAgentConfig() {
+        this(1);
+    }
 }

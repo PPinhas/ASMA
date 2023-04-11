@@ -21,6 +21,7 @@ public class TrustAgent extends IntrigueAgent {
     protected void setup() {
         super.setup();
         for (Player player : game.getPlayers()) {
+            if (player.getId() == this.getId()) continue;
             trustFactors.put(player, 0);
         }
         if (getArguments().length >= 3)
@@ -50,5 +51,21 @@ public class TrustAgent extends IntrigueAgent {
 
     public TrustAgentConfig getConfig() {
         return config;
+    }
+
+    public Map<Player, Integer> getTrustFactors() {
+        return trustFactors;
+    }
+
+    public Player getMostTrustedPlayer() {
+        Player mostTrustedPlayer = null;
+        int mostTrust = -1;
+        for (Player player : trustFactors.keySet()) {
+            if (trustFactors.get(player) > mostTrust) {
+                mostTrust = trustFactors.get(player);
+                mostTrustedPlayer = player;
+            }
+        }
+        return mostTrustedPlayer;
     }
 }
