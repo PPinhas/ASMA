@@ -15,6 +15,7 @@ public class AssignJobsDecisionRandom extends AssignJobsDecision {
 
     @Override
     protected JobsAssigned assignJobs(Palace palace) {
+        System.out.println("inside assignJobs");
         ArrayList<Integer> pieceIndices = new ArrayList<>();
         ArrayList<Integer> cardIndices = new ArrayList<>();
         ArrayList<Palace.Card> availableCards = new ArrayList<>(palace.getEmptyCards());

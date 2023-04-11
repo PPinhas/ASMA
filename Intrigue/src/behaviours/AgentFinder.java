@@ -51,7 +51,7 @@ public class AgentFinder extends SubscriptionInitiator {
         AID agent = dfd.getName();
         // It also adds itself to simplify game updates and avoid code duplication
         if (!this.containsAgent(agent)) {
-            System.out.println("New agent in town: " + agent.getLocalName() + " (from " + this.myAgent.getLocalName() + ")");
+            //System.out.println("New agent in town: " + agent.getLocalName() + " (from " + this.myAgent.getLocalName() + ")");
             this.agents.add(agent);
         }
     }

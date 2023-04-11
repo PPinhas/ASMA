@@ -1,41 +1,52 @@
 package behaviours;
 
+import behaviours.assign.ResolveConflict;
 import jade.core.AID;
+import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import static config.GameConfig.TIMEOUT;
+import static config.Protocols.*;
+
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TurnMaster extends Behaviour {
     private boolean done = false;
     private int turn;
 
-    // Constructor
-    public TurnMaster(int turn) {
+    public TurnMaster(int turn, Agent agent) {
+        super(agent);
         this.turn = turn;
+        this.action();
     }
 
-    // This method is called when the behavior starts
-    public void onStart() {
-        System.out.println("Starting TurnMaster");
-    }
-
-    // This method is called repeatedly until the behavior is finished
     public void action() {
-        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-        String aid = "player" + this.turn + "@172.17.0.1;1099/JADE";
+        ACLMessage msg = new ACLMessage();
+        //String aid = "player" + this.turn + "@172.17.0.1;1099/JADE";
+        String aid = "player" + this.turn;
         msg.addReceiver(new AID(aid, AID.ISLOCALNAME));
-        msg.setContent("It's your turn");
-        myAgent.send(msg);
-        // if got response
+
+
+        //ArrayList<String> protocols = new ArrayList<>(Arrays.asList(ASSIGN_JOBS, SEEK_EMPLOYMENT, RESOLVE_CONFLICT));
+        ArrayList<String> protocols = new ArrayList<>(Arrays.asList(ASSIGN_JOBS, SEEK_EMPLOYMENT));
+
+
+        for(String protocol : protocols){
+            msg.setProtocol(protocol);
+            myAgent.send(msg);
+            ACLMessage response = myAgent.blockingReceive(TIMEOUT);
+            if(response != null) {
+                System.out.println("TurnMaster: response for protocol "+ protocol + " from player "+ this.turn + "is: " + response.getContent());
+                break;
+            } else {
+                System.out.println("TurnMaster: No response for protocol " + protocol + " from player " + this.turn);
+            }
+        }
         done = true;
     }
 
-    // This method is called when the behavior is finished
-    public int onEnd() {
-        System.out.println("Ending TurnMaster");
-        return 0;
-    }
-
-    // This method is called to determine whether the behavior is finished
     public boolean done() {
         return done; // This behavior never finishes
     }

@@ -195,9 +195,9 @@ public class Game {
             board.append('\n');
             Palace palace = player.getPalace();
             if(!palace.getParkPieces().isEmpty()) {
-                board.append("    | Pieces in palace park:");
+                board.append("    | Pieces in palace park:\n");
                 for (Piece piece : palace.getParkPieces()) {
-                    board.append(String.format("\n        %s from Player %d", piece.getJob(), piece.getPlayer().getId()));
+                    board.append(String.format("        %s from Player %d\n", piece.getJob(), piece.getPlayer().getId()));
                 }
             }else{
                 board.append("    | No pieces in palace park\n");

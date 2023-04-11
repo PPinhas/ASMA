@@ -16,6 +16,7 @@ public class RandomSeekJobs extends SeekJobs {
 
     @Override
     public EmployeesSent seekJobs() {
+        System.out.println("inside random seekJobs");
         ArrayList<Piece> pieces = new ArrayList<>(intrigueAgent.getOwnPlayer().getPieces());
         ArrayList<Integer> pieceIndices = new ArrayList<>();
         ArrayList<Integer> playerIndices = new ArrayList<>();
