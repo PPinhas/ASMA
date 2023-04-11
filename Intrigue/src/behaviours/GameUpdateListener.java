@@ -36,6 +36,8 @@ public class GameUpdateListener extends CyclicBehaviour {
             return;
         }
 
+        if (!game.hasStarted()) return;
+
         switch (msg.getProtocol()) {
             case Protocols.NEW_TURN -> this.game.nextTurn();
             case Protocols.COLLECT_INCOME -> this.game.collectIncome();
@@ -70,6 +72,7 @@ public class GameUpdateListener extends CyclicBehaviour {
      */
     private void handleEmployeesSent(ACLMessage msg) {
         EmployeesSent info;
+        System.out.println("received employees sent in agent " + myAgent.getLocalName());
         try {
             info = (EmployeesSent) msg.getContentObject();
         } catch (UnreadableException e) {

@@ -24,8 +24,6 @@ public class SeekJobsRandom extends SeekJobs {
         players.remove(intrigueAgent.getOwnPlayer());
 
         Random random = new Random();
-        System.out.println("pieces: " + pieces);
-        System.out.println("players: " + players);
 
         selectRandomIndex(pieces, intrigueAgent.getOwnPlayer().getPieces(), pieceIndices, random);
         selectRandomIndex(players, intrigueAgent.getGame().getPlayers(), playerIndices, random);
@@ -37,9 +35,9 @@ public class SeekJobsRandom extends SeekJobs {
         selectRandomIndex(pieces, intrigueAgent.getOwnPlayer().getPieces(), pieceIndices, random);
         selectRandomIndex(players, intrigueAgent.getGame().getPlayers(), playerIndices, random);
 
-        System.out.println("pieces: " + pieces);
-        System.out.println("pieceIndices: " + pieceIndices);
-        System.out.println("playerIndices: " + playerIndices);
+        System.out.println("sent pieceIndices: " + pieceIndices);
+        System.out.println("sent playerIndices: " + playerIndices);
+        System.out.println("current player ID: " + intrigueAgent.getOwnPlayer().getId());
 
         return new EmployeesSent(pieceIndices, playerIndices);
     }
