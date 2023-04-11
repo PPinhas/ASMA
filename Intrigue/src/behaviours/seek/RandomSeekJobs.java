@@ -26,14 +26,24 @@ public class RandomSeekJobs extends SeekJobs {
         players.remove(intrigueAgent.getOwnPlayer());
 
         Random random = new Random();
+
+        System.out.println("pieces: " + pieces);
+        System.out.println("players: " + players);
+
         selectRandomIndex(pieces, pieceIndices, random);
         selectRandomIndex(players, playerIndices, random);
+
+
 
         // try second employee
         if (pieces.isEmpty()) return new EmployeesSent(pieceIndices, playerIndices);
 
         selectRandomIndex(pieces, pieceIndices, random);
         selectRandomIndex(players, playerIndices, random);
+
+        System.out.println("pieces: " + pieces);
+        System.out.println("pieceIndices: " + pieceIndices);
+        System.out.println("playerIndices: " + playerIndices);
 
         return new EmployeesSent(pieceIndices, playerIndices);
     }

@@ -29,8 +29,8 @@ public class TurnMaster extends Behaviour {
         msg.addReceiver(new AID(aid, AID.ISLOCALNAME));
 
 
-        //ArrayList<String> protocols = new ArrayList<>(Arrays.asList(ASSIGN_JOBS, SEEK_EMPLOYMENT, RESOLVE_CONFLICT));
-        ArrayList<String> protocols = new ArrayList<>(Arrays.asList(ASSIGN_JOBS, SEEK_EMPLOYMENT));
+        //ArrayList<String> protocols = new ArrayList<>(Arrays.asList(RESOLVE_CONFLICT, ASSIGN_JOBS, SEEK_EMPLOYMENT));
+        ArrayList<String> protocols = new ArrayList<>(Arrays.asList(SEEK_EMPLOYMENT));
 
 
         for(String protocol : protocols){

@@ -25,7 +25,8 @@ public class Game {
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
-        this.currentPlayerIdx = (int) (Math.random() * this.numPlayers) + 1;
+        //this.currentPlayerIdx = (int) (Math.random() * this.numPlayers) + 1;
+        this.currentPlayerIdx = 1;
 
         this.islandPieces = new ArrayList<>();
         this.isOver = false;
@@ -99,6 +100,9 @@ public class Game {
     }
 
     public void seekJob(int playerIdx, int pieceIndex) {
+
+        System.out.println("Player " + this.getCurrentPlayer().getId() + " is seeking a job in player " + playerIdx + " for piece " + pieceIndex);
+
         Piece piece = this.getCurrentPlayer().getPieces().remove(pieceIndex);
         this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
     }
