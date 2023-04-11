@@ -4,7 +4,10 @@ import behaviours.WaitForAction;
 import behaviours.assign.AssignJobsPhase;
 import behaviours.bribe.GiveBribe;
 import behaviours.seek.SeekJobs;
+import config.messages.ResolveConflict;
 import game.Player;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 
 import static config.Protocols.*;
 
@@ -22,11 +25,17 @@ public abstract class IntrigueAgent extends InformedAgent {
         addBehaviour(new WaitForAction(this));
     }
 
-    public void handleAction(String action) {
+    public void handleAction(String action, ACLMessage msg) {
         switch (action) {
             case ASSIGN_JOBS -> addBehaviour(getAssignJobsBehaviour());
             case SEEK_EMPLOYMENT -> addBehaviour(getSeekJobsBehaviour());
-            case RESOLVE_CONFLICT -> addBehaviour(getResolveConflictBehaviour());
+            case RESOLVE_CONFLICT -> {
+                try {
+                    addBehaviour(getResolveConflictBehaviour((ResolveConflict) msg.getContentObject()));
+                } catch (UnreadableException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 
@@ -34,7 +43,7 @@ public abstract class IntrigueAgent extends InformedAgent {
 
     protected abstract SeekJobs getSeekJobsBehaviour();
 
-    protected abstract GiveBribe getResolveConflictBehaviour();
+    protected abstract GiveBribe getResolveConflictBehaviour(ResolveConflict conflict);
 
     public int getId() {
         return id;

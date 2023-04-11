@@ -8,9 +8,9 @@ import game.Player;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class RandomSeekJobs extends SeekJobs {
+public class SeekJobsRandom extends SeekJobs {
 
-    public RandomSeekJobs(IntrigueAgent intrigueAgent) {
+    public SeekJobsRandom(IntrigueAgent intrigueAgent) {
         super(intrigueAgent);
     }
 
@@ -18,8 +18,6 @@ public class RandomSeekJobs extends SeekJobs {
     public EmployeesSent seekJobs() {
         System.out.println("inside random seekJobs");
         ArrayList<Piece> pieces = new ArrayList<>(intrigueAgent.getOwnPlayer().getPieces());
-        ArrayList<Integer> pieceIndices = new ArrayList<>();
-        ArrayList<Integer> playerIndices = new ArrayList<>();
         if (pieces.isEmpty()) return new EmployeesSent(pieceIndices, playerIndices);
 
         ArrayList<Player> players = new ArrayList<>(intrigueAgent.getGame().getPlayers());

@@ -20,7 +20,7 @@ public class WaitForAction extends CyclicBehaviour {
 
             System.out.println("received a message from " + msg.getSender().getLocalName() + " with content " + content);
 
-            intrigueAgent.handleAction(content);
+            intrigueAgent.handleAction(content, msg);
         } else {
             // block the behavior until a message is received
             block();

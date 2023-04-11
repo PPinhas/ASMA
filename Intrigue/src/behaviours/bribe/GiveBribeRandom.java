@@ -2,11 +2,12 @@ package behaviours.bribe;
 
 import agents.IntrigueAgent;
 import config.messages.BribeOffered;
+import config.messages.ResolveConflict;
 
-public class GiveRandomBribe extends GiveBribe {
+public class GiveBribeRandom extends GiveBribe {
 
-    public GiveRandomBribe(IntrigueAgent intrigueAgent) {
-        super(intrigueAgent);
+    public GiveBribeRandom(IntrigueAgent intrigueAgent, ResolveConflict conflict) {
+        super(intrigueAgent, conflict);
     }
 
     @Override

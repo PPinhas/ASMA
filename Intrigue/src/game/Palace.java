@@ -139,4 +139,13 @@ public class Palace {
         }
         return emptyCards;
     }
+
+    public boolean hasJob(Piece.Job job) {
+        for (Card card : cards) {
+            if (card.getPiece() != null && card.getPiece().getJob() == job) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
