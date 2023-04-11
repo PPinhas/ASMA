@@ -23,7 +23,7 @@ public abstract class GiveBribe extends OneShotBehaviour {
     }
 
     public void action() {
-        BribeOffered bribeOffered = offerBribe(game.getCurrentPlayerIdx());
+        BribeOffered bribeOffered = offerBribe(game.getCurrentPlayerId());
         ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.BRIBE_OFFERED, bribeOffered, intrigueAgent.getAgents());
         intrigueAgent.send(msg);
     }

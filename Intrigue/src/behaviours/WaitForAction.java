@@ -17,6 +17,8 @@ public class WaitForAction extends CyclicBehaviour {
         if (msg != null) {
             // TODO do something with content, maybe pass message
             String content = msg.getProtocol();
+            System.out.println("received a message from " + msg.getSender().getLocalName() + " with content " + content);
+
             intrigueAgent.handleAction(content, msg);
         } else {
             // block the behavior until a message is received
