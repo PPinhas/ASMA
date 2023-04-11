@@ -1,9 +1,11 @@
 package config;
 
 public record TrustAgentConfig(
-        int bribeMultiplier
+        int bribeMultiplier,
+        int bribeAcceptedScore,
+        int bribeRejectedScore
 ) {
     public TrustAgentConfig() {
-        this(1);
+        this(1, 100, -100);
     }
 }

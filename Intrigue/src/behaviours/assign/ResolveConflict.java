@@ -100,7 +100,7 @@ public abstract class ResolveConflict extends SequentialBehaviour {
             cardIdx = (int) (Math.random() * emptyCards.size());
         }
 
-        return new JobsAssigned(Collections.singletonList(pieceIdx), Collections.singletonList(cardIdx));
+        return new JobsAssigned(Collections.singletonList(pieceIdx), Collections.singletonList(cardIdx), Collections.singletonList(chosenPlayer.getId()));
     }
 
     protected Integer getCardIdxFromJob(Palace palace, Piece.Job job) {

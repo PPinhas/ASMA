@@ -68,4 +68,10 @@ public class TrustAgent extends IntrigueAgent {
         }
         return mostTrustedPlayer;
     }
+
+    public void changeTrustFactor(Player player, int change) {
+        int trustFactor = trustFactors.get(player);
+        trustFactor += change;
+        trustFactors.put(player, trustFactor);
+    }
 }

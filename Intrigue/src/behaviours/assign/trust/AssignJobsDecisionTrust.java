@@ -42,10 +42,11 @@ public class AssignJobsDecisionTrust extends AssignJobsDecision {
 
             cardIndices.add(palace.getCards().indexOf(bestCard));
             pieceIndices.add(palace.getParkPieces().indexOf(privilegedPiece));
+            pieceOwners.add(privilegedPiece.getPlayer().getId());
             availableCards.remove(bestCard);
             waitingPieces.remove(privilegedPiece);
         }
 
-        return new JobsAssigned(pieceIndices, cardIndices);
+        return new JobsAssigned(pieceIndices, cardIndices, pieceOwners);
     }
 }
