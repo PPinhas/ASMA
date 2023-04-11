@@ -24,20 +24,18 @@ public class SeekJobsRandom extends SeekJobs {
         players.remove(intrigueAgent.getOwnPlayer());
 
         Random random = new Random();
-
         System.out.println("pieces: " + pieces);
         System.out.println("players: " + players);
 
-        selectRandomIndex(pieces, pieceIndices, random);
-        selectRandomIndex(players, playerIndices, random);
-
+        selectRandomIndex(pieces, intrigueAgent.getOwnPlayer().getPieces(), pieceIndices, random);
+        selectRandomIndex(players, intrigueAgent.getGame().getPlayers(), playerIndices, random);
 
 
         // try second employee
         if (pieces.isEmpty()) return new EmployeesSent(pieceIndices, playerIndices);
 
-        selectRandomIndex(pieces, pieceIndices, random);
-        selectRandomIndex(players, playerIndices, random);
+        selectRandomIndex(pieces, intrigueAgent.getOwnPlayer().getPieces(), pieceIndices, random);
+        selectRandomIndex(players, intrigueAgent.getGame().getPlayers(), playerIndices, random);
 
         System.out.println("pieces: " + pieces);
         System.out.println("pieceIndices: " + pieceIndices);
@@ -46,9 +44,9 @@ public class SeekJobsRandom extends SeekJobs {
         return new EmployeesSent(pieceIndices, playerIndices);
     }
 
-    private <T> void selectRandomIndex(ArrayList<T> list, ArrayList<Integer> indexList, Random random) {
-        int index = random.nextInt(list.size());
-        indexList.add(index);
-        list.remove(index);
+    private <T> void selectRandomIndex(ArrayList<T> availableList, ArrayList<T> realList, ArrayList<Integer> indexList, Random random) {
+        int index = random.nextInt(availableList.size());
+        indexList.add(realList.indexOf(availableList.get(index)));
+        availableList.remove(index);
     }
 }
