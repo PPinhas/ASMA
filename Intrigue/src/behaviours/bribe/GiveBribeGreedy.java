@@ -14,7 +14,6 @@ public class GiveBribeGreedy extends GiveBribe {
     @Override
     protected BribeOffered offerBribe(int playerIdx) {
         int money = intrigueAgent.getOwnPlayer().getMoney();
-        int largestBribe = 0;
 
         int largestBribe = GameConfig.MINIMUM_BRIBE - 1;
         for (Integer bribe : conflict.bribes().values()) {

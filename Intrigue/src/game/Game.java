@@ -13,7 +13,6 @@ public class Game {
     private int currentRound;
     private final int maxRounds;
     private boolean isOver;
-    private boolean started;
 
     private final ArrayList<Player> players;
     private int currentPlayerId;
@@ -30,7 +29,6 @@ public class Game {
         this.islandPieces = new ArrayList<>();
         this.isOver = false;
         this.players = new ArrayList<>();
-        this.started = false;
 
         for (int i = 0; i < this.numPlayers; i++) {
             try {
@@ -50,7 +48,6 @@ public class Game {
                 throw new RuntimeException(e);
             }
         }
-        displayGame();
     }
 
     private void nextRound() {
@@ -74,6 +71,7 @@ public class Game {
     }
 
     public void nextTurn() {
+        System.out.println("inside next turn");
         this.banishWaitingPieces();
 
         if (this.currentPlayerId == this.numPlayers) {
@@ -111,12 +109,8 @@ public class Game {
         System.out.println("current player ID " + this.getCurrentPlayer().getId());
 
         Piece piece;
-        try {
-            piece = this.getCurrentPlayer().getPieces().remove(pieceIndex);
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Player " + this.getCurrentPlayer().getId() + " has no pieces to seek a job");
-            return;
-        }
+        piece = this.getCurrentPlayer().getPieces().remove(pieceIndex);
+        System.out.println("Player " + this.getCurrentPlayer().getId() + " has no pieces to seek a job");
         this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
     }
 
@@ -135,10 +129,6 @@ public class Game {
 
     public boolean isOver() {
         return isOver;
-    }
-
-    public boolean hasStarted() {
-        return started;
     }
 
     public int getCurrentRound() {
@@ -178,9 +168,6 @@ public class Game {
         return null;
     }
 
-    public void start() {
-        this.started = true;
-    }
 
     private void displayGame() {
         StringBuilder board = new StringBuilder();

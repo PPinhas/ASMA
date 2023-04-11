@@ -36,8 +36,6 @@ public class GameUpdateListener extends CyclicBehaviour {
             return;
         }
 
-        if (!game.hasStarted()) return;
-
         switch (msg.getProtocol()) {
             case Protocols.NEW_TURN -> this.game.nextTurn();
             case Protocols.COLLECT_INCOME -> this.game.collectIncome();
