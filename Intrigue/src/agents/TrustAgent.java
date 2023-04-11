@@ -7,7 +7,9 @@ import behaviours.bribe.GiveBribe;
 import behaviours.bribe.GiveBribeTrust;
 import behaviours.seek.SeekJobs;
 import behaviours.seek.SeekJobsTrust;
+import config.GameConfig;
 import config.TrustAgentConfig;
+import config.messages.BribeOffered;
 import config.messages.JobsAssigned;
 import config.messages.ResolveConflict;
 import game.Palace;
@@ -111,6 +113,7 @@ public class TrustAgent extends IntrigueAgent {
                     break;
                 }
             }
+            if (myIndex == -1) return;
 
             ArrayList<Palace.Card> cards = game.getCurrentPlayer().getPalace().getCards();
             int jobValue = cards.get(info.cardIndices().get(myIndex)).getValue();
@@ -121,8 +124,24 @@ public class TrustAgent extends IntrigueAgent {
             }
             int averageValue = totalValue / info.cardIndices().size();
 
-            int valueDiff = (int) Math.round((jobValue - averageValue) * config.assignedJobMultiplier());
-            trustAgent.changeTrustFactor(game.getCurrentPlayer(), valueDiff);
+            int factorDiff = (int) Math.round((jobValue - averageValue) * config.assignedJobMultiplier());
+            trustAgent.changeTrustFactor(game.getCurrentPlayer(), factorDiff);
+        }
+
+        @Override
+        protected void handleBribeOffered(ACLMessage msg) {
+            super.handleBribeOffered(msg);
+            BribeOffered info;
+            try {
+                info = (BribeOffered) msg.getContentObject();
+            } catch (UnreadableException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (info.playerId() != trustAgent.getId()) return;
+            int bribeDiff = info.amount() - GameConfig.MINIMUM_BRIBE;
+            int factorDiff = (int) Math.round(bribeDiff * config.bribeReceivedMultiplier());
+            trustAgent.changeTrustFactor(game.getCurrentPlayer(), factorDiff);
         }
     }
 }

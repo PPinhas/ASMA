@@ -62,7 +62,7 @@ public class GiveBribeTrust extends GiveBribe {
         }
 
         int trustFactor = trustAgent.getTrustFactor(game.getPlayerById(playerId));
-        int bribe = largestBribe + (int) Math.round(trustFactor * trustAgent.getConfig().bribeMultiplier());
+        int bribe = largestBribe + (int) Math.round(trustFactor * trustAgent.getConfig().bribeGivenMultiplier());
 
         bribe = Math.min(money, bribe);
         if (bribe < GameConfig.MINIMUM_BRIBE) bribe = 0;
