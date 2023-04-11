@@ -96,6 +96,6 @@ public class GameUpdateListener extends CyclicBehaviour {
             throw new RuntimeException(e);
         }
 
-        this.game.transferBribe(info.playerIdx(), info.amount());
+        this.game.transferBribe(info.playerId(), info.amount());
     }
 }

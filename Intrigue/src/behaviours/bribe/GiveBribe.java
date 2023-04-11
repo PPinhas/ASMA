@@ -28,5 +28,5 @@ public abstract class GiveBribe extends OneShotBehaviour {
         intrigueAgent.send(msg);
     }
 
-    protected abstract BribeOffered offerBribe(int playerIdx);
+    protected abstract BribeOffered offerBribe(int playerId);
 }

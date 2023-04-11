@@ -11,8 +11,8 @@ public class GiveBribeTrust extends GiveBribe {
     }
 
     @Override
-    protected BribeOffered offerBribe(int playerIdx) {
+    protected BribeOffered offerBribe(int playerId) {
         // TODO calculate the bribe based on the trust factor (some kind of linear function?)
-        return new BribeOffered(playerIdx, 0);
+        return new BribeOffered(playerId, 0);
     }
 }
