@@ -75,8 +75,10 @@ public class Game {
 
     public void nextTurn() {
         this.banishWaitingPieces();
+
         if (this.currentPlayerId == this.numPlayers) {
             this.currentPlayerId = 1;
+
             nextRound();
         } else {
             this.currentPlayerId++;
