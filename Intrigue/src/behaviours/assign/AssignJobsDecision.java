@@ -9,9 +9,14 @@ import game.Palace;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 
+import java.util.ArrayList;
+
 public abstract class AssignJobsDecision extends OneShotBehaviour {
     protected final Game game;
     protected final IntrigueAgent intrigueAgent;
+
+    protected final ArrayList<Integer> pieceIndices = new ArrayList<>();
+    protected final ArrayList<Integer> cardIndices = new ArrayList<>();
 
     public AssignJobsDecision(IntrigueAgent intrigueAgent, Game game) {
         super(intrigueAgent);

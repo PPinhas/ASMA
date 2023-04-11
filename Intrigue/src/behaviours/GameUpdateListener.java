@@ -63,7 +63,6 @@ public class GameUpdateListener extends CyclicBehaviour {
         for (int i = 0; i < info.selectedPieceIndices().size(); i++) {
             this.game.assignJob(info.selectedPieceIndices().get(i), info.cardIndices().get(i));
         }
-        this.game.banishWaitingPieces();
     }
 
     /**

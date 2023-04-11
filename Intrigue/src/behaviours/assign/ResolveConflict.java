@@ -6,6 +6,8 @@ import config.Protocols;
 import config.messages.BribeOffered;
 import config.messages.JobsAssigned;
 import game.Game;
+import game.Palace;
+import game.Piece;
 import game.Player;
 import game.conflict.Conflict;
 import jade.core.AID;
@@ -14,6 +16,7 @@ import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public abstract class ResolveConflict extends SequentialBehaviour {
@@ -51,7 +54,8 @@ public abstract class ResolveConflict extends SequentialBehaviour {
         @Override
         public void action() {
             AID receiver = intrigueAgent.getAgentByPlayerId(player.getId());
-            ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.REQUEST, Protocols.RESOLVE_CONFLICT, Collections.singletonList(receiver));
+            config.messages.ResolveConflict resolveConflictMsg = new config.messages.ResolveConflict(conflict);
+            ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.REQUEST, Protocols.RESOLVE_CONFLICT, resolveConflictMsg, Collections.singletonList(receiver));
             intrigueAgent.send(msg);
 
             ACLMessage reply;
@@ -67,8 +71,39 @@ public abstract class ResolveConflict extends SequentialBehaviour {
                 throw new RuntimeException(e);
             }
 
-            conflict.getBribes().put(player, bribeOffered.amount());
+            conflict.addBribe(player.getId(), bribeOffered.amount());
         }
+    }
+
+    protected JobsAssigned buildJobsAssignedFromChosenPlayer(Player chosenPlayer) {
+        Palace palace = intrigueAgent.getOwnPlayer().getPalace();
+        ArrayList<Piece> parkPieces = palace.getParkPieces();
+
+        int pieceIdx = -1;
+        for (Piece piece : parkPieces) {
+            if (piece.getPlayer().equals(chosenPlayer)) {
+                pieceIdx = parkPieces.indexOf(piece);
+            }
+        }
+
+        Integer cardIdx = getCardIdxFromJob(palace, conflict.getJob()); // internal conflict
+        if (cardIdx == null) { // external conflict
+            ArrayList<Palace.Card> emptyCards = palace.getEmptyCards();
+            if (emptyCards.size() == 0) return null; // Impossible, or there would be an internal conflict
+            cardIdx = (int) (Math.random() * emptyCards.size());
+        }
+
+        return new JobsAssigned(Collections.singletonList(pieceIdx), Collections.singletonList(cardIdx));
+    }
+
+    protected Integer getCardIdxFromJob(Palace palace, Piece.Job job) {
+        for (Palace.Card card : palace.getCards()) {
+            if (card.getPiece() != null && card.getPiece().getJob().equals(job)) {
+                return palace.getCards().indexOf(card);
+            }
+        }
+
+        return null;
     }
 
     protected class AssignJobs extends OneShotBehaviour {
