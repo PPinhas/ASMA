@@ -19,6 +19,7 @@ public class ResolveConflictRandom extends ResolveConflict {
     @Override
     protected JobsAssigned resolveConflict() {
         Player[] conflictPlayers = conflict.getPlayers().toArray(new Player[0]);
+        // Job holder is ignored in internal conflicts.
         Player chosenPlayer = conflictPlayers[(int) (Math.random() * conflictPlayers.length)];
         return buildJobsAssignedFromChosenPlayer(chosenPlayer);
     }

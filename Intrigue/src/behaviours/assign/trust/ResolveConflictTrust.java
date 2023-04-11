@@ -6,6 +6,7 @@ import config.messages.JobsAssigned;
 import game.Game;
 import game.Player;
 import game.conflict.Conflict;
+import game.conflict.InternalConflict;
 
 import java.util.TreeSet;
 
@@ -27,6 +28,12 @@ public class ResolveConflictTrust extends ResolveConflict {
             int currentTrust = trustAgent.getTrustFactor(chosenPlayer);
             if (playerTrust > currentTrust) {
                 chosenPlayer = player;
+            }
+        }
+
+        if (conflict instanceof InternalConflict internalConflict) {
+            if (trustAgent.getTrustFactor(internalConflict.getJobHolder()) > trustAgent.getTrustFactor(chosenPlayer)) {
+                chosenPlayer = internalConflict.getJobHolder();
             }
         }
 

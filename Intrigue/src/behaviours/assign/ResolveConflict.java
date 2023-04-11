@@ -85,6 +85,13 @@ public abstract class ResolveConflict extends SequentialBehaviour {
                 pieceIdx = parkPieces.indexOf(piece);
             }
         }
+        if (pieceIdx == -1) { // current job holder
+            for (Palace.Card card : palace.getCards()) {
+                if (card.getPiece() != null && card.getPiece().getPlayer().equals(chosenPlayer)) {
+                    pieceIdx = palace.getCards().indexOf(card);
+                }
+            }
+        }
 
         Integer cardIdx = getCardIdxFromJob(palace, conflict.getJob()); // internal conflict
         if (cardIdx == null) { // external conflict

@@ -6,6 +6,7 @@ import config.messages.JobsAssigned;
 import game.Game;
 import game.Player;
 import game.conflict.Conflict;
+import game.conflict.InternalConflict;
 
 import java.util.TreeSet;
 
@@ -22,6 +23,12 @@ public class ResolveConflictGreedy extends ResolveConflict {
         for (Player player : conflictPlayers) {
             if (conflict.getBribe(player) > conflict.getBribe(chosenPlayer)) {
                 chosenPlayer = player;
+            }
+        }
+
+        if (conflict instanceof InternalConflict internalConflict) {
+            if (conflict.getBribe(internalConflict.getJobHolder()) > conflict.getBribe(chosenPlayer)) {
+                chosenPlayer = internalConflict.getJobHolder();
             }
         }
 
