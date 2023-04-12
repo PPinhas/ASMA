@@ -70,7 +70,6 @@ public class GameUpdateListener extends CyclicBehaviour {
      */
     protected void handleEmployeesSent(ACLMessage msg) {
         EmployeesSent info;
-        System.out.println("received employees sent in agent " + myAgent.getLocalName());
         try {
             info = (EmployeesSent) msg.getContentObject();
         } catch (UnreadableException e) {

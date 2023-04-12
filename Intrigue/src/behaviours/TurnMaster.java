@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static config.GameConfig.TIMEOUT;
-import static config.Protocols.*;
+import static config.Protocols.NEW_TURN;
+import static config.Protocols.SEEK_EMPLOYMENT;
 
 public class TurnMaster extends Behaviour {
     private boolean done = false;
-    private int turn;
+    private final int turn;
 
     public TurnMaster(int turn, Agent agent) {
         super(agent);
@@ -35,7 +36,6 @@ public class TurnMaster extends Behaviour {
         for (String protocol : protocols) {
             msg.setProtocol(protocol);
             myAgent.send(msg);
-            /*
             ACLMessage response = myAgent.blockingReceive(TIMEOUT);
             if (response != null) {
                 System.out.println("TurnMaster: response for protocol " + protocol + " from player " + this.turn + "is: " + response.getContent());
@@ -43,8 +43,6 @@ public class TurnMaster extends Behaviour {
             } else {
                 System.out.println("TurnMaster: No response for protocol " + protocol + " from player " + this.turn);
             }
-            */
-
         }
         try {
             Thread.sleep(1000);
@@ -55,6 +53,6 @@ public class TurnMaster extends Behaviour {
     }
 
     public boolean done() {
-        return done; // This behavior never finishes
+        return done;
     }
 }

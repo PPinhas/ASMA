@@ -11,11 +11,9 @@ public class GameMaster extends InformedAgent {
             Behaviour turnMaster = new TurnMaster(game.getCurrentPlayerId(), this);
             addBehaviour(turnMaster);
             while (!turnMaster.done()) {
-
-                //System.out.println("Waiting for turn to end");
-                //do nothing
             }
-            game.nextTurn();
+            //game.nextTurn();
+            break;
         }
 
     }

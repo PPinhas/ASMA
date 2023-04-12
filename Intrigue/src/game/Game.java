@@ -20,11 +20,9 @@ public class Game {
     private final ArrayList<Piece> islandPieces;
 
     public Game(AgentContainer container, boolean createAgents) {
-        System.out.println("inside game constructor with createAgents as: " + createAgents);
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
-        // TODO this.currentPlayerIdx = (int) (Math.random() * this.numPlayers) + 1;
         this.currentPlayerId = 1;
 
         this.islandPieces = new ArrayList<>();
@@ -72,7 +70,6 @@ public class Game {
     }
 
     public void nextTurn() {
-        displayGame();
         this.banishWaitingPieces();
         if (this.currentPlayerId == this.numPlayers) {
             this.currentPlayerId = 1;
@@ -102,7 +99,6 @@ public class Game {
     }
 
     public void seekJob(int playerIdx, int pieceIndex) {
-        System.out.println("INSIDE SEEKJOB");
         Piece piece;
         piece = this.getCurrentPlayer().getPieces().remove(pieceIndex);
         this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
@@ -227,6 +223,6 @@ public class Game {
         }
         board.append("\n");
 
-        System.out.println(board.toString());
+        System.out.println(board);
     }
 }
