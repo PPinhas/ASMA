@@ -20,6 +20,7 @@ public class Game {
     private final ArrayList<Piece> islandPieces;
 
     public Game(AgentContainer container, boolean createAgents) {
+        System.out.println("inside game constructor with createAgents as: " + createAgents);
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
@@ -103,14 +104,9 @@ public class Game {
     }
 
     public void seekJob(int playerIdx, int pieceIndex) {
-
-        System.out.println("player index " + playerIdx);
-        System.out.println("piece index " + pieceIndex);
-        System.out.println("current player ID " + this.getCurrentPlayer().getId());
-
+        System.out.println("INSIDE SEEKJOB");
         Piece piece;
-        piece = this.getCurrentPlayer().getPieces().remove(pieceIndex-1);
-        System.out.println("Player " + this.getCurrentPlayer().getId() + " has no pieces to seek a job");
+        piece = this.getCurrentPlayer().getPieces().remove(pieceIndex);
         this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
     }
 

@@ -37,6 +37,9 @@ public class AssignJobsDecisionGreedy extends AssignJobsDecision {
 
             cardIndices.add(palace.getCards().indexOf(worstCard));
             pieceIndices.add(palace.getParkPieces().indexOf(richestPiece));
+
+            availableCards.remove(worstCard);
+            waitingPieces.remove(richestPiece);
         }
 
         return new JobsAssigned(pieceIndices, cardIndices);

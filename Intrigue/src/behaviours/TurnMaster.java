@@ -29,12 +29,13 @@ public class TurnMaster extends Behaviour {
 
 
         //ArrayList<String> protocols = new ArrayList<>(Arrays.asList(RESOLVE_CONFLICT, ASSIGN_JOBS, SEEK_EMPLOYMENT, NEW_TURN));
-        ArrayList<String> protocols = new ArrayList<>(Arrays.asList(SEEK_EMPLOYMENT));
+        ArrayList<String> protocols = new ArrayList<>(Arrays.asList(SEEK_EMPLOYMENT, NEW_TURN));
 
 
         for (String protocol : protocols) {
             msg.setProtocol(protocol);
             myAgent.send(msg);
+            /*
             ACLMessage response = myAgent.blockingReceive(TIMEOUT);
             if (response != null) {
                 System.out.println("TurnMaster: response for protocol " + protocol + " from player " + this.turn + "is: " + response.getContent());
@@ -42,6 +43,8 @@ public class TurnMaster extends Behaviour {
             } else {
                 System.out.println("TurnMaster: No response for protocol " + protocol + " from player " + this.turn);
             }
+            */
+
         }
         try {
             Thread.sleep(1000);
