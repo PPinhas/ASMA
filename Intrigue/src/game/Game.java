@@ -24,7 +24,7 @@ public class Game {
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
-        //this.currentPlayerIdx = (int) (Math.random() * this.numPlayers) + 1;
+        // TODO this.currentPlayerIdx = (int) (Math.random() * this.numPlayers) + 1;
         this.currentPlayerId = 1;
 
         this.islandPieces = new ArrayList<>();
@@ -74,10 +74,8 @@ public class Game {
     public void nextTurn() {
         displayGame();
         this.banishWaitingPieces();
-
         if (this.currentPlayerId == this.numPlayers) {
             this.currentPlayerId = 1;
-
             nextRound();
         } else {
             this.currentPlayerId++;
@@ -110,9 +108,9 @@ public class Game {
         this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
     }
 
-    public void transferBribe(int playerIdx, int amount) {
+    public void transferBribe(int playerId, int amount) {
         this.getCurrentPlayer().moneyTransaction(amount);
-        this.getPlayers().get(playerIdx).moneyTransaction(-amount);
+        this.getPlayers().get(playerId - 1).moneyTransaction(-amount);
     }
 
     public void banishWaitingPieces() {

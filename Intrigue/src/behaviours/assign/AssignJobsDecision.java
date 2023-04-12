@@ -17,6 +17,7 @@ public abstract class AssignJobsDecision extends OneShotBehaviour {
 
     protected final ArrayList<Integer> pieceIndices = new ArrayList<>();
     protected final ArrayList<Integer> cardIndices = new ArrayList<>();
+    protected final ArrayList<Integer> pieceOwners = new ArrayList<>();
 
     public AssignJobsDecision(IntrigueAgent intrigueAgent, Game game) {
         super(intrigueAgent);

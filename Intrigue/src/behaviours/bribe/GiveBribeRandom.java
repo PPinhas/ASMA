@@ -12,10 +12,10 @@ public class GiveBribeRandom extends GiveBribe {
     }
 
     @Override
-    protected BribeOffered offerBribe(int playerIdx) {
+    protected BribeOffered offerBribe(int playerId) {
         int money = intrigueAgent.getOwnPlayer().getMoney();
         int bribe = (int) (Math.random() * (money - GameConfig.MINIMUM_BRIBE + 1)) + GameConfig.MINIMUM_BRIBE;
         if (bribe < GameConfig.MINIMUM_BRIBE) bribe = 0;
-        return new BribeOffered(playerIdx, bribe);
+        return new BribeOffered(playerId, bribe);
     }
 }
