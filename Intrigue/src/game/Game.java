@@ -71,7 +71,7 @@ public class Game {
     }
 
     public void nextTurn() {
-        System.out.println("inside next turn");
+        displayGame();
         this.banishWaitingPieces();
 
         if (this.currentPlayerId == this.numPlayers) {
@@ -81,7 +81,7 @@ public class Game {
         } else {
             this.currentPlayerId++;
         }
-        displayGame();
+
     }
 
     public void collectIncome() {
@@ -109,7 +109,7 @@ public class Game {
         System.out.println("current player ID " + this.getCurrentPlayer().getId());
 
         Piece piece;
-        piece = this.getCurrentPlayer().getPieces().remove(pieceIndex);
+        piece = this.getCurrentPlayer().getPieces().remove(pieceIndex-1);
         System.out.println("Player " + this.getCurrentPlayer().getId() + " has no pieces to seek a job");
         this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
     }

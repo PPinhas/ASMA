@@ -84,6 +84,8 @@ public class GameUpdateListener extends CyclicBehaviour {
         for (int i = 0; i < info.pieceIndices().size(); i++) {
             this.game.seekJob(info.playerIndices().get(i), info.pieceIndices().get(i));
         }
+
+        System.out.println("about to exit handle employees sent in agent " + myAgent.getLocalName());
     }
 
     /**
