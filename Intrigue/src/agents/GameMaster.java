@@ -33,15 +33,6 @@ public class GameMaster extends InformedAgent {
         @Override
         protected void handleJobsAssigned(ACLMessage msg) {
             super.handleJobsAssigned(msg);
-
-            if (!game.getCurrentPlayer().getPalace().getParkPieces().isEmpty()) { // not over yet
-                return;
-            }
-
-            block(GameConfig.ACTION_DELAY_MS);
-            AID receiver = getAgentByPlayerId(game.getCurrentPlayerId());
-            ACLMessage seekMsg = buildMessage(ACLMessage.REQUEST, SEEK_EMPLOYMENT, List.of(receiver));
-            send(seekMsg);
         }
 
         @Override
@@ -67,8 +58,8 @@ public class GameMaster extends InformedAgent {
             }
 
             block(GameConfig.ACTION_DELAY_MS);
-            ACLMessage newTurnMsg = buildMessage(ACLMessage.INFORM, COLLECT_INCOME, getAgents());
-            send(newTurnMsg);
+            ACLMessage incomeMsg = buildMessage(ACLMessage.INFORM, COLLECT_INCOME, getAgents());
+            send(incomeMsg);
         }
 
         @Override
@@ -77,7 +68,11 @@ public class GameMaster extends InformedAgent {
 
             block(GameConfig.ACTION_DELAY_MS);
             AID receiver = getAgentByPlayerId(game.getCurrentPlayerId());
-            ACLMessage seekMsg = buildMessage(ACLMessage.REQUEST, ASSIGN_JOBS, List.of(receiver));
+            ACLMessage seekMsg;
+            if (game.getCurrentPlayer().getPalace().getParkPieces().isEmpty())
+                seekMsg = buildMessage(ACLMessage.REQUEST, SEEK_EMPLOYMENT, List.of(receiver));
+            else
+                seekMsg = buildMessage(ACLMessage.REQUEST, ASSIGN_JOBS, List.of(receiver));
             send(seekMsg);
         }
     }

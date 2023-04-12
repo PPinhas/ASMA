@@ -121,15 +121,6 @@ public class Palace {
         return replacedPiece;
     }
 
-    /**
-     * Assign a piece to a card and returns the piece that was replaced (by index)
-     */
-    public Piece assignPiece(int pieceIndex, int cardIndex) {
-        Piece piece = this.parkPieces.get(pieceIndex);
-        Card card = this.cards.get(cardIndex);
-        return this.assignPiece(piece, card);
-    }
-
     public ArrayList<Card> getEmptyCards() {
         ArrayList<Card> emptyCards = new ArrayList<>();
         for (Card card : cards) {

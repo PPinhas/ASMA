@@ -2,6 +2,7 @@ package behaviours.assign;
 
 import agents.IntrigueAgent;
 import behaviours.BehaviourUtils;
+import config.GameConfig;
 import config.Protocols;
 import config.messages.BribeOffered;
 import config.messages.JobsAssigned;
@@ -19,6 +20,7 @@ import jade.lang.acl.UnreadableException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public abstract class ResolveConflict extends SequentialBehaviour {
     protected final Game game;
@@ -41,7 +43,6 @@ public abstract class ResolveConflict extends SequentialBehaviour {
         for (Player player : conflict.getPlayers()) {
             this.addSubBehaviour(new AskForBribe(intrigueAgent, player));
         }
-        // TODO Ensure if there are no race conditions, since we need our own message to update the game.
         this.addSubBehaviour(new AssignJobs(intrigueAgent));
     }
 
@@ -61,6 +62,7 @@ public abstract class ResolveConflict extends SequentialBehaviour {
         public void action() {
             AID receiver = intrigueAgent.getAgentByPlayerId(player.getId());
             config.messages.ResolveConflict resolveConflictMsg = new config.messages.ResolveConflict(conflict);
+            block(GameConfig.ACTION_DELAY_MS);
             ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.REQUEST, Protocols.RESOLVE_CONFLICT, resolveConflictMsg, Collections.singletonList(receiver));
             intrigueAgent.send(msg);
 
@@ -77,6 +79,7 @@ public abstract class ResolveConflict extends SequentialBehaviour {
             }
 
             conflict.addBribe(player.getId(), bribeOffered.amount());
+            block(GameConfig.ACTION_DELAY_MS);
         }
     }
 
@@ -88,13 +91,6 @@ public abstract class ResolveConflict extends SequentialBehaviour {
         for (Piece piece : parkPieces) {
             if (piece.getPlayer().equals(chosenPlayer)) {
                 pieceIdx = parkPieces.indexOf(piece);
-            }
-        }
-        if (pieceIdx == -1) { // current job holder
-            for (Palace.Card card : palace.getCards()) {
-                if (card.getPiece() != null && card.getPiece().getPlayer().equals(chosenPlayer)) {
-                    pieceIdx = palace.getCards().indexOf(card);
-                }
             }
         }
 
@@ -119,6 +115,7 @@ public abstract class ResolveConflict extends SequentialBehaviour {
     }
 
     protected class AssignJobs extends OneShotBehaviour {
+
         public AssignJobs(IntrigueAgent intrigueAgent) {
             super(intrigueAgent);
         }
@@ -127,8 +124,25 @@ public abstract class ResolveConflict extends SequentialBehaviour {
         public void action() {
             JobsAssigned jobsAssigned = resolveConflict();
             if (jobsAssigned.selectedPieceIndices().isEmpty()) return;
-            ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.JOBS_ASSIGNED, jobsAssigned, intrigueAgent.getAgents());
+            System.out.println("Jobs assigned (conflict): " + jobsAssigned.selectedPieceIndices());
+            block(GameConfig.ACTION_DELAY_MS);
+
+            List<AID> receivers = new ArrayList<>(intrigueAgent.getAgents());
+            receivers.remove(intrigueAgent.getAID());
+            ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.JOBS_ASSIGNED, jobsAssigned, receivers);
             intrigueAgent.send(msg);
+
+            List<Piece> pieces = new ArrayList<>();
+            List<Palace.Card> cards = new ArrayList<>();
+            for (int i = 0; i < jobsAssigned.selectedPieceIndices().size(); i++) {
+                pieces.add(game.getCurrentPlayer().getPalace().getParkPieces().get(jobsAssigned.selectedPieceIndices().get(i)));
+                cards.add(game.getCurrentPlayer().getPalace().getCards().get(jobsAssigned.cardIndices().get(i)));
+            }
+
+            for (int i = 0; i < pieces.size(); i++) {
+                game.assignJob(pieces.get(i), cards.get(i));
+            }
+
         }
     }
 }

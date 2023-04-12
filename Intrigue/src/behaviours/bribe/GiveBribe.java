@@ -2,6 +2,7 @@ package behaviours.bribe;
 
 import agents.IntrigueAgent;
 import behaviours.BehaviourUtils;
+import config.GameConfig;
 import config.Protocols;
 import config.messages.BribeOffered;
 import config.messages.ResolveConflict;
@@ -27,6 +28,7 @@ public abstract class GiveBribe extends OneShotBehaviour {
 
     public void action() {
         BribeOffered bribeOffered = offerBribe(game.getCurrentPlayerId());
+        block(GameConfig.ACTION_DELAY_MS);
         ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.BRIBE_OFFERED, bribeOffered, intrigueAgent.getAgents());
         intrigueAgent.send(msg);
 

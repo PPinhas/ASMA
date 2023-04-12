@@ -19,7 +19,7 @@ public class AssignJobsDecisionGreedy extends AssignJobsDecision {
         ArrayList<Palace.Card> availableCards = new ArrayList<>(palace.getEmptyCards());
         ArrayList<Piece> waitingPieces = new ArrayList<>(palace.getParkPieces());
 
-        while (!availableCards.isEmpty()) {
+        while (!waitingPieces.isEmpty()) {
             // get worst card and assign it to player with more money
             Palace.Card worstCard = availableCards.get(0);
             for (Palace.Card card : availableCards) {
