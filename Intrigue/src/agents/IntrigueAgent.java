@@ -21,7 +21,6 @@ public abstract class IntrigueAgent extends InformedAgent {
         super.setup();
         Object[] args = getArguments();
         this.id = (int) args[1];
-        game.start();
 
         addBehaviour(new WaitForAction(this));
     }
