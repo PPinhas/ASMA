@@ -16,7 +16,6 @@ public class SeekJobsRandom extends SeekJobs {
 
     @Override
     public EmployeesSent seekJobs() {
-        System.out.println("inside random seekJobs");
         ArrayList<Piece> pieces = new ArrayList<>(intrigueAgent.getOwnPlayer().getPieces());
         if (pieces.isEmpty()) return new EmployeesSent(pieceIndices, playerIndices);
 
@@ -24,20 +23,14 @@ public class SeekJobsRandom extends SeekJobs {
         players.remove(intrigueAgent.getOwnPlayer());
 
         Random random = new Random();
-
         selectRandomIndex(pieces, intrigueAgent.getOwnPlayer().getPieces(), pieceIndices, random);
         selectRandomIndex(players, intrigueAgent.getGame().getPlayers(), playerIndices, random);
-
 
         // try second employee
         if (pieces.isEmpty()) return new EmployeesSent(pieceIndices, playerIndices);
 
         selectRandomIndex(pieces, intrigueAgent.getOwnPlayer().getPieces(), pieceIndices, random);
         selectRandomIndex(players, intrigueAgent.getGame().getPlayers(), playerIndices, random);
-
-        System.out.println("sent pieceIndices: " + pieceIndices);
-        System.out.println("sent playerIndices: " + playerIndices);
-        System.out.println("current player ID: " + intrigueAgent.getOwnPlayer().getId());
 
         return new EmployeesSent(pieceIndices, playerIndices);
     }

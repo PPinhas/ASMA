@@ -1,6 +1,6 @@
-package behaviours.assign.greedy;
+package behaviours.assign.trust;
 
-import agents.IntrigueAgent;
+import agents.TrustAgent;
 import behaviours.assign.ResolveConflict;
 import config.messages.JobsAssigned;
 import game.Game;
@@ -10,10 +10,13 @@ import game.conflict.InternalConflict;
 
 import java.util.TreeSet;
 
-public class ResolveConflictGreedy extends ResolveConflict {
+public class ResolveConflictTrust extends ResolveConflict {
 
-    public ResolveConflictGreedy(IntrigueAgent agent, Game game, Conflict conflict) {
-        super(agent, game, conflict);
+    private final TrustAgent trustAgent;
+
+    public ResolveConflictTrust(TrustAgent trustAgent, Game game, Conflict conflict) {
+        super(trustAgent, game, conflict);
+        this.trustAgent = trustAgent;
     }
 
     @Override
@@ -21,13 +24,15 @@ public class ResolveConflictGreedy extends ResolveConflict {
         TreeSet<Player> conflictPlayers = conflict.getPlayers();
         Player chosenPlayer = conflictPlayers.first();
         for (Player player : conflictPlayers) {
-            if (conflict.getBribe(player) > conflict.getBribe(chosenPlayer)) {
+            int playerTrust = trustAgent.getTrustFactor(player);
+            int currentTrust = trustAgent.getTrustFactor(chosenPlayer);
+            if (playerTrust > currentTrust) {
                 chosenPlayer = player;
             }
         }
 
         if (conflict instanceof InternalConflict internalConflict) {
-            if (conflict.getBribe(internalConflict.getJobHolder()) > conflict.getBribe(chosenPlayer)) {
+            if (trustAgent.getTrustFactor(internalConflict.getJobHolder()) > trustAgent.getTrustFactor(chosenPlayer)) {
                 chosenPlayer = internalConflict.getJobHolder();
             }
         }

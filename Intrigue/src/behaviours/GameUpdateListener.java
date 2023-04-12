@@ -50,7 +50,7 @@ public class GameUpdateListener extends CyclicBehaviour {
     /**
      * Handle the message sent when jobs are assigned by the current player.
      */
-    private void handleJobsAssigned(ACLMessage msg) {
+    protected void handleJobsAssigned(ACLMessage msg) {
         JobsAssigned info;
         try {
             info = (JobsAssigned) msg.getContentObject();
@@ -70,7 +70,7 @@ public class GameUpdateListener extends CyclicBehaviour {
     /**
      * Handle the message sent when employees are sent by the current player.
      */
-    private void handleEmployeesSent(ACLMessage msg) {
+    protected void handleEmployeesSent(ACLMessage msg) {
         EmployeesSent info;
         System.out.println("received employees sent in agent " + myAgent.getLocalName());
         try {
@@ -91,7 +91,7 @@ public class GameUpdateListener extends CyclicBehaviour {
     /**
      * Handle the message sent when a bribe is offered to the current player.
      */
-    private void handleBribeOffered(ACLMessage msg) {
+    protected void handleBribeOffered(ACLMessage msg) {
         BribeOffered info;
         try {
             info = (BribeOffered) msg.getContentObject();
@@ -99,6 +99,6 @@ public class GameUpdateListener extends CyclicBehaviour {
             throw new RuntimeException(e);
         }
 
-        this.game.transferBribe(info.playerIdx(), info.amount());
+        this.game.transferBribe(info.playerId(), info.amount());
     }
 }

@@ -23,7 +23,7 @@ public abstract class InformedAgent extends Agent {
 
         this.registerAgent();
         this.subscribeToFindAgents();
-        addBehaviour(new GameUpdateListener(this));
+        addBehaviour(getGameUpdateListener());
     }
 
     private void registerAgent() {
@@ -78,5 +78,9 @@ public abstract class InformedAgent extends Agent {
             }
         }
         return null;
+    }
+
+    protected GameUpdateListener getGameUpdateListener() {
+        return new GameUpdateListener(this);
     }
 }
