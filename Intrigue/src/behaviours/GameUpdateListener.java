@@ -54,14 +54,12 @@ public class GameUpdateListener extends CyclicBehaviour {
      * Handle the message sent when jobs are assigned by the current player.
      */
     protected void handleJobsAssigned(ACLMessage msg) {
-        System.out.println("jobs assigned " + myAgent.getLocalName());
         JobsAssigned info;
         try {
             info = (JobsAssigned) msg.getContentObject();
         } catch (UnreadableException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(info.selectedPieceIndices());
 
         if (info.selectedPieceIndices().size() != info.cardIndices().size()) {
             throw new RuntimeException("Invalid message content( " + msg.getProtocol() + "):\n" + msg.getContent());
@@ -87,7 +85,6 @@ public class GameUpdateListener extends CyclicBehaviour {
      * Handle the message sent when employees are sent by the current player.
      */
     protected void handleEmployeesSent(ACLMessage msg) {
-        System.out.println("employees sent " + myAgent.getLocalName());
         EmployeesSent info;
         try {
             info = (EmployeesSent) msg.getContentObject();
@@ -113,7 +110,6 @@ public class GameUpdateListener extends CyclicBehaviour {
      * Handle the message sent when a bribe is offered to the current player.
      */
     protected void handleBribeOffered(ACLMessage msg) {
-        System.out.println("bribe offered " + myAgent.getLocalName());
         BribeOffered info;
         try {
             info = (BribeOffered) msg.getContentObject();
@@ -125,12 +121,10 @@ public class GameUpdateListener extends CyclicBehaviour {
     }
 
     protected void handleNewTurn(ACLMessage msg) {
-        System.out.println("new turn " + myAgent.getLocalName());
         this.game.nextTurn();
     }
 
     protected void handleCollectIncome(ACLMessage msg) {
-        System.out.println("collect income " + myAgent.getLocalName());
         this.game.collectIncome();
     }
 }

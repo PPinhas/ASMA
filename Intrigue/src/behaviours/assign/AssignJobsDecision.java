@@ -35,7 +35,6 @@ public abstract class AssignJobsDecision extends OneShotBehaviour {
         Palace palace = intrigueAgent.getOwnPlayer().getPalace();
         if (!palace.getParkPieces().isEmpty()) {
             JobsAssigned jobsAssigned = assignJobs(palace);
-            System.out.println("decision " + jobsAssigned.selectedPieceIndices());
 
             block(GameConfig.ACTION_DELAY_MS);
             ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.JOBS_ASSIGNED, jobsAssigned, intrigueAgent.getAgents());

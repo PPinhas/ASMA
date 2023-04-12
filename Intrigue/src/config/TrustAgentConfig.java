@@ -8,6 +8,6 @@ public record TrustAgentConfig(
         int bribeRejectedScore
 ) {
     public TrustAgentConfig() {
-        this(1, 0.05, 0.05, 100, -100);
+        this(2, 0.1, 0.1, 100, -50);
     }
 }

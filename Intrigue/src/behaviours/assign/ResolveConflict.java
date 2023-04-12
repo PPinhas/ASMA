@@ -11,6 +11,7 @@ import game.Palace;
 import game.Piece;
 import game.Player;
 import game.conflict.Conflict;
+import game.conflict.InternalConflict;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
@@ -40,6 +41,9 @@ public abstract class ResolveConflict extends SequentialBehaviour {
     }
 
     public void onStart() {
+        if (conflict instanceof InternalConflict internalConflict) {
+            this.addSubBehaviour(new AskForBribe(intrigueAgent, internalConflict.getJobHolder()));
+        }
         for (Player player : conflict.getPlayers()) {
             this.addSubBehaviour(new AskForBribe(intrigueAgent, player));
         }
@@ -124,18 +128,23 @@ public abstract class ResolveConflict extends SequentialBehaviour {
         public void action() {
             JobsAssigned jobsAssigned = resolveConflict();
             if (jobsAssigned.selectedPieceIndices().isEmpty()) return;
-            System.out.println("Jobs assigned (conflict): " + jobsAssigned.selectedPieceIndices());
             block(GameConfig.ACTION_DELAY_MS);
 
             List<AID> receivers = new ArrayList<>(intrigueAgent.getAgents());
             receivers.remove(intrigueAgent.getAID());
             ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.JOBS_ASSIGNED, jobsAssigned, receivers);
             intrigueAgent.send(msg);
+            ACLMessage msg2 = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.JOBS_ASSIGNED_CONFLICT, jobsAssigned, receivers);
+            intrigueAgent.send(msg2);
 
             List<Piece> pieces = new ArrayList<>();
             List<Palace.Card> cards = new ArrayList<>();
             for (int i = 0; i < jobsAssigned.selectedPieceIndices().size(); i++) {
-                pieces.add(game.getCurrentPlayer().getPalace().getParkPieces().get(jobsAssigned.selectedPieceIndices().get(i)));
+                if (jobsAssigned.selectedPieceIndices().get(i) == -1) { // job holder stays the same
+                    pieces.add(null);
+                } else {
+                    pieces.add(game.getCurrentPlayer().getPalace().getParkPieces().get(jobsAssigned.selectedPieceIndices().get(i)));
+                }
                 cards.add(game.getCurrentPlayer().getPalace().getCards().get(jobsAssigned.cardIndices().get(i)));
             }
 

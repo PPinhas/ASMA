@@ -21,6 +21,7 @@ public class GiveBribeGreedy extends GiveBribe {
                 largestBribe = bribe;
             }
         }
+        largestBribe = Math.max(GameConfig.MINIMUM_BRIBE, largestBribe);
 
         int bribe = Math.min(money, largestBribe + 1);
 

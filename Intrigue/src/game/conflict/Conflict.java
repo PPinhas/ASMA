@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.TreeSet;
 
 public abstract class Conflict {
-    private final Piece.Job job;
-    private final TreeSet<Player> players;
-    private final HashMap<Player, Integer> bribes;
+    protected final Piece.Job job;
+    protected final TreeSet<Player> players;
+    protected final HashMap<Player, Integer> bribes;
 
     public Conflict(Piece.Job job) {
         this.job = job;
