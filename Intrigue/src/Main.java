@@ -1,3 +1,4 @@
+import config.GameExporter;
 import game.Game;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -6,6 +7,7 @@ import jade.wrapper.AgentContainer;
 import java.util.ArrayList;
 
 import static config.GameConfig.AGENT_TYPES;
+import static config.GameConfig.NUM_REPETITIONS;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,11 +17,14 @@ public class Main {
                     for (int l = 0; l < AGENT_TYPES.length; l++) {
                         for (int m = 0; k < AGENT_TYPES.length; m++) {
                             String[] agentTypes = {AGENT_TYPES[i], AGENT_TYPES[j], AGENT_TYPES[k], AGENT_TYPES[l], AGENT_TYPES[m]};
-                            Profile profile = new ProfileImpl();
-                            profile.setParameter(Profile.CONTAINER_NAME, "Intrigue");
-                            AgentContainer gameContainer = jade.core.Runtime.instance().createMainContainer(profile);
-                            new Game(gameContainer, true, agentTypes);
+                            new GameExporter(agentTypes);
 
+                            for (int numRepetitions = 0; numRepetitions < NUM_REPETITIONS; numRepetitions++) {
+                                Profile profile = new ProfileImpl();
+                                profile.setParameter(Profile.CONTAINER_NAME, "Intrigue");
+                                AgentContainer gameContainer = jade.core.Runtime.instance().createMainContainer(profile);
+                                new Game(gameContainer, true, agentTypes);
+                            }
                             break;
                         }
                         break;

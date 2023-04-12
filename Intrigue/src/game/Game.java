@@ -64,12 +64,13 @@ public class Game {
     }
 
     private void endGame() {
-        ArrayList<Integer> data = new ArrayList<>();
+        String[] data = new String[5];
         Player winner = players.get(0);
-        for (Player player : this.players) {
-            data.add(player.getMoney());
-            if (player.getMoney() > winner.getMoney()) {
-                winner = player;
+
+        for(int i = 0; i < this.players.size(); i++){
+            data[i] = String.valueOf(getCurrentPlayer().getMoney());
+            if(this.players.get(i).getMoney() > winner.getMoney()){
+                winner = this.players.get(i);
             }
         }
         this.isOver = true;

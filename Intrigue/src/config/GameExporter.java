@@ -9,7 +9,7 @@ import static config.GameConfig.CSV_HEADERS;
 import static config.GameConfig.CSV_FILENAME;
 
 public class GameExporter {
-    public GameExporter(ArrayList<Integer> data){
+    public GameExporter(String[] data){
         File csvFile = new File(CSV_FILENAME);
         boolean csvExists = csvFile.exists();
 
@@ -26,13 +26,12 @@ public class GameExporter {
             }
 
 
-            for (int i = 0; i < data.size(); i++) {
-                csvWriter.append(data.get(i).toString());
-                if (i != data.size() - 1) {
+            for (int i = 0; i < data.length; i++) {
+                csvWriter.append(data[i]);
+                if (i != data.length - 1) {
                     csvWriter.append(",");
                 }
             }
-            csvWriter.append("\n");
             csvWriter.flush();
             csvWriter.close();
         } catch (IOException e) {

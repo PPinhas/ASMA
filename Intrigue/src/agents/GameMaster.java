@@ -12,8 +12,8 @@ public class GameMaster extends InformedAgent {
             addBehaviour(turnMaster);
             while (!turnMaster.done()) {
             }
-            //game.nextTurn();
-            break;
+            game.nextTurn();
+            //break;
         }
 
     }
