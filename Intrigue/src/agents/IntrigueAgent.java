@@ -27,16 +27,9 @@ public abstract class IntrigueAgent extends InformedAgent {
 
     public void handleAction(String action, ACLMessage msg) {
         switch (action) {
-            case ASSIGN_JOBS -> {
-                System.out.println("Assigning jobs " + getLocalName());
-                addBehaviour(getAssignJobsBehaviour());
-            }
-            case SEEK_EMPLOYMENT -> {
-                System.out.println("Seeking employment " + getLocalName());
-                addBehaviour(getSeekJobsBehaviour());
-            }
+            case ASSIGN_JOBS -> addBehaviour(getAssignJobsBehaviour());
+            case SEEK_EMPLOYMENT -> addBehaviour(getSeekJobsBehaviour());
             case RESOLVE_CONFLICT -> {
-                System.out.println("Resolving conflict " + getLocalName());
                 try {
                     addBehaviour(getResolveConflictBehaviour((ResolveConflict) msg.getContentObject()));
                 } catch (UnreadableException e) {

@@ -126,8 +126,6 @@ public class TrustAgent extends IntrigueAgent {
 
             int factorDiff = (int) Math.round((jobValue - averageValue) * config.assignedJobMultiplier());
             trustAgent.changeTrustFactor(game.getCurrentPlayer(), factorDiff);
-
-            System.out.println("trust factors player " + getId() + " " + trustAgent.getTrustFactors());
         }
 
         @Override

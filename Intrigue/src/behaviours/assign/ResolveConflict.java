@@ -128,7 +128,6 @@ public abstract class ResolveConflict extends SequentialBehaviour {
         public void action() {
             JobsAssigned jobsAssigned = resolveConflict();
             if (jobsAssigned.selectedPieceIndices().isEmpty()) return;
-            System.out.println("Jobs assigned (conflict): " + jobsAssigned.selectedPieceIndices());
             block(GameConfig.ACTION_DELAY_MS);
 
             List<AID> receivers = new ArrayList<>(intrigueAgent.getAgents());
