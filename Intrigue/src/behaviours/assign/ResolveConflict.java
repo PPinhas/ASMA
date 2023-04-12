@@ -14,6 +14,7 @@ import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 
 import java.util.ArrayList;
@@ -23,6 +24,11 @@ public abstract class ResolveConflict extends SequentialBehaviour {
     protected final Game game;
     protected final Conflict conflict;
     protected final IntrigueAgent intrigueAgent;
+
+    private final MessageTemplate template = BehaviourUtils.buildMessageTemplate(
+            ACLMessage.INFORM,
+            Protocols.OFFER_BRIBE_TO_PLAYER
+    );
 
     public ResolveConflict(IntrigueAgent agent, Game game, Conflict conflict) {
         super(agent);
@@ -60,10 +66,9 @@ public abstract class ResolveConflict extends SequentialBehaviour {
 
             ACLMessage reply;
             do {
-                reply = intrigueAgent.blockingReceive();
-            } while (!reply.getSender().getLocalName().equals(receiver.getLocalName()) || !reply.getProtocol().equals(Protocols.BRIBE_OFFERED));
+                reply = intrigueAgent.receive(template);
+            } while (reply == null || !reply.getSender().getLocalName().equals(receiver.getLocalName()));
 
-            // TODO Check if we can read the same message here and in GameUpdateListener. Otherwise, we need to send 2 messages in GiveBribe behaviour.
             BribeOffered bribeOffered;
             try {
                 bribeOffered = (BribeOffered) reply.getContentObject();
