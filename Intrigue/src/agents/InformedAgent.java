@@ -18,8 +18,7 @@ public abstract class InformedAgent extends Agent {
 
     protected void setup() {
         System.out.println("Agent " + getAID().getName() + " is ready.");
-        Object[] args = getArguments();
-        this.game = (Game) args[0];
+        this.game = new Game(getContainerController(), false);
 
         this.registerAgent();
         this.subscribeToFindAgents();

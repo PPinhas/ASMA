@@ -10,4 +10,5 @@ public class GameConfig {
     public static final int NUM_ALCHEMISTS_PER_PLAYER = 2;
     public static final int NUM_HEALERS_PER_PLAYER = 2;
     public static final int MINIMUM_BRIBE = 1000;
+    public static long ACTION_DELAY_MS = 100;
 }

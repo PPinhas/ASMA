@@ -31,7 +31,6 @@ public class SeekJobsRandom extends SeekJobs {
 
         selectRandomIndex(pieces, intrigueAgent.getOwnPlayer().getPieces(), pieceIndices, random);
         selectRandomIndex(players, intrigueAgent.getGame().getPlayers(), playerIndices, random);
-
         return new EmployeesSent(pieceIndices, playerIndices);
     }
 

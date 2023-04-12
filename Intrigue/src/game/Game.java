@@ -5,6 +5,7 @@ import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static config.GameConfig.NUM_PLAYERS;
 import static config.GameConfig.NUM_ROUNDS;
@@ -19,11 +20,11 @@ public class Game {
     private final int numPlayers;
     private final ArrayList<Piece> islandPieces;
 
-    public Game(AgentContainer container) {
+    public Game(AgentContainer container, boolean createAgents) {
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
-        this.currentPlayerId = (int) (Math.random() * this.numPlayers) + 1;
+        this.currentPlayerId = 1;
 
         this.islandPieces = new ArrayList<>();
         this.isOver = false;
@@ -31,39 +32,42 @@ public class Game {
 
         for (int i = 0; i < this.numPlayers; i++) {
             try {
-                this.players.add(new Player(container, i + 1, this));
+                this.players.add(new Player(container, i + 1, this, createAgents));
             } catch (StaleProxyException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        Object[] args = new Object[1];
-        args[0] = this;
-        try {
-            AgentController agent = container.createNewAgent("GameMaster", "agents.GameMaster", args);
-            agent.start();
-        } catch (StaleProxyException e) {
-            throw new RuntimeException(e);
+        if (createAgents) {
+            Object[] args = new Object[1];
+            args[0] = this;
+            try {
+                AgentController agent = container.createNewAgent("GameMaster", "agents.GameMaster", args);
+                agent.start();
+            } catch (StaleProxyException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     private void nextRound() {
         if (this.currentRound == this.maxRounds) {
-            endGame();
+            this.isOver = true;
         } else {
             this.currentRound++;
         }
     }
 
-    private void endGame() {
+    public void endGame() {
+        collectIncome();
         Player winner = players.get(0);
         for (Player player : this.players) {
             if (player.getMoney() > winner.getMoney()) {
                 winner = player;
             }
         }
-        this.isOver = true;
 
+        this.display();
         System.out.println("Game is over. The winner is player" + winner.getId() + " with " + winner.getMoney() + " money.");
     }
 
@@ -75,6 +79,7 @@ public class Game {
         } else {
             this.currentPlayerId++;
         }
+
     }
 
     public void collectIncome() {
@@ -87,16 +92,27 @@ public class Game {
         }
     }
 
-    public void assignJob(int pieceIdx, int cardIndex) {
+    public void assignJob(Piece piece, Palace.Card card) {
         Palace palace = this.getCurrentPlayer().getPalace();
-        Piece replacedPiece = palace.assignPiece(pieceIdx, cardIndex);
-        if (replacedPiece != null) {
-            this.getIslandPieces().add(replacedPiece);
+        if (piece != null) { // null means the job owner stays the same
+            Piece replacedPiece = palace.assignPiece(piece, card);
+            if (replacedPiece != null) {
+                this.getIslandPieces().add(replacedPiece);
+            }
+        }
+
+        // banish conflict pieces
+        List<Piece> parkPieces = new ArrayList<>(palace.getParkPieces());
+        for (Piece p : parkPieces) {
+            if (p.getJob().equals(card.getPiece().getJob())) {
+                palace.getParkPieces().remove(p);
+                this.islandPieces.add(p);
+            }
         }
     }
 
-    public void seekJob(int playerIdx, int pieceIndex) {
-        Piece piece = this.getCurrentPlayer().getPieces().remove(pieceIndex);
+    public void seekJob(int playerIdx, Piece piece) {
+        this.getCurrentPlayer().getPieces().remove(piece);
         this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
     }
 
@@ -152,5 +168,73 @@ public class Game {
             }
         }
         return null;
+    }
+
+
+    public void display() {
+        StringBuilder board = new StringBuilder();
+
+
+        board.append("  +");
+        for (int i = 0; i < 5; i++) {
+            board.append("--------+");
+        }
+        board.append("\n");
+        board.append(String.format("%-10s Round: %s", " ", this.currentRound));
+        board.append(" | Turn: ");
+        board.append(this.currentPlayerId);
+        board.append("\n");
+
+        if (!this.islandPieces.isEmpty()) {
+            board.append("Pieces in the island:\n");
+            for (Piece piece : this.islandPieces) {
+                board.append(String.format("%s from Player %d \n", piece.getJob(), piece.getPlayer().getId()));
+            }
+        } else {
+            board.append("No pieces in the island.\n");
+        }
+
+
+        for (int i = 0; i < this.numPlayers; i++) {
+            String playerName = "Player " + (i + 1);
+            Player player = this.players.get(i);
+            board.append((playerName));
+            board.append("\n");
+            board.append(String.format("    | Money: %d", player.getMoney()));
+            board.append("\n");
+            board.append("    | Pieces: ");
+            for (Piece piece : player.getPieces()) {
+                board.append(String.format("%s|", piece.getJob()));
+            }
+            board.append('\n');
+            Palace palace = player.getPalace();
+            if (!palace.getParkPieces().isEmpty()) {
+                board.append("    | Pieces in palace park:\n");
+                for (Piece piece : palace.getParkPieces()) {
+                    board.append(String.format("        %s from Player %d\n", piece.getJob(), piece.getPlayer().getId()));
+                }
+            } else {
+                board.append("    | No pieces in palace park\n");
+            }
+
+            board.append("    | Card status:\n");
+            for (Palace.Card card : palace.getCards()) {
+                if (card.getPiece() == null) {
+                    board.append(String.format("        Card of value %d is not occupied\n", card.getValue()));
+                } else {
+                    Piece piece = card.getPiece();
+                    board.append(String.format("        Card of value %d is occupied by %s of %d\n", card.getValue(), piece.getJob(), piece.getPlayer().getId()));
+                }
+
+            }
+        }
+
+        board.append("  +");
+        for (int i = 0; i < 5; i++) {
+            board.append("--------+");
+        }
+        board.append("\n");
+
+        System.out.println(board);
     }
 }
