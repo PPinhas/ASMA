@@ -51,20 +51,20 @@ public class Game {
 
     private void nextRound() {
         if (this.currentRound == this.maxRounds) {
-            endGame();
+            this.isOver = true;
         } else {
             this.currentRound++;
         }
     }
 
-    private void endGame() {
+    public void endGame() {
+        collectIncome();
         Player winner = players.get(0);
         for (Player player : this.players) {
             if (player.getMoney() > winner.getMoney()) {
                 winner = player;
             }
         }
-        this.isOver = true;
 
         System.out.println("Game is over. The winner is player" + winner.getId() + " with " + winner.getMoney() + " money.");
     }
@@ -159,7 +159,7 @@ public class Game {
     }
 
 
-    private void displayGame() {
+    public void display() {
         StringBuilder board = new StringBuilder();
 
 

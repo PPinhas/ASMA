@@ -1,5 +1,6 @@
 package behaviours;
 
+import agents.GameMaster;
 import agents.InformedAgent;
 import config.Protocols;
 import config.messages.BribeOffered;
@@ -37,8 +38,8 @@ public class GameUpdateListener extends CyclicBehaviour {
         }
 
         switch (msg.getProtocol()) {
-            case Protocols.NEW_TURN -> this.game.nextTurn();
-            case Protocols.COLLECT_INCOME -> this.game.collectIncome();
+            case Protocols.NEW_TURN -> this.handleNewTurn(msg);
+            case Protocols.COLLECT_INCOME -> this.handleCollectIncome(msg);
             case Protocols.JOBS_ASSIGNED -> this.handleJobsAssigned(msg);
             case Protocols.EMPLOYEES_SENT -> this.handleEmployeesSent(msg);
             case Protocols.BRIBE_OFFERED -> this.handleBribeOffered(msg);
@@ -75,6 +76,7 @@ public class GameUpdateListener extends CyclicBehaviour {
         } catch (UnreadableException e) {
             throw new RuntimeException(e);
         }
+        if (myAgent instanceof GameMaster) System.out.print("GameMaster: received sent " + info);
 
         if (info.pieceIndices().size() != info.playerIndices().size()) {
             throw new RuntimeException("Invalid message content( " + msg.getProtocol() + "):\n" + msg.getContent());
@@ -97,5 +99,13 @@ public class GameUpdateListener extends CyclicBehaviour {
         }
 
         this.game.transferBribe(info.playerId(), info.amount());
+    }
+
+    protected void handleNewTurn(ACLMessage msg) {
+        this.game.nextTurn();
+    }
+
+    protected void handleCollectIncome(ACLMessage msg) {
+        this.game.collectIncome();
     }
 }
