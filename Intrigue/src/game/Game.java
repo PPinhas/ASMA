@@ -15,7 +15,7 @@ public class Game {
     private boolean isOver;
 
     private final ArrayList<Player> players;
-    private int currentPlayerIdx;
+    private int currentPlayerId;
     private final int numPlayers;
     private final ArrayList<Piece> islandPieces;
 
@@ -23,7 +23,7 @@ public class Game {
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
-        this.currentPlayerIdx = (int) (Math.random() * this.numPlayers) + 1;
+        this.currentPlayerId = (int) (Math.random() * this.numPlayers) + 1;
 
         this.islandPieces = new ArrayList<>();
         this.isOver = false;
@@ -68,16 +68,17 @@ public class Game {
     }
 
     public void nextTurn() {
-        if (this.currentPlayerIdx == this.numPlayers) {
-            this.currentPlayerIdx = 1;
+        this.banishWaitingPieces();
+        if (this.currentPlayerId == this.numPlayers) {
+            this.currentPlayerId = 1;
             nextRound();
         } else {
-            this.currentPlayerIdx++;
+            this.currentPlayerId++;
         }
     }
 
     public void collectIncome() {
-        Palace palace = this.players.get(this.currentPlayerIdx).getPalace();
+        Palace palace = this.players.get(this.currentPlayerId - 1).getPalace();
         for (Palace.Card card : palace.getCards()) {
             Piece piece = card.getPiece();
             if (piece != null) {
@@ -99,9 +100,9 @@ public class Game {
         this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
     }
 
-    public void transferBribe(int playerIdx, int amount) {
+    public void transferBribe(int playerId, int amount) {
         this.getCurrentPlayer().moneyTransaction(amount);
-        this.getPlayers().get(playerIdx).moneyTransaction(-amount);
+        this.getPlayers().get(playerId - 1).moneyTransaction(-amount);
     }
 
     public void banishWaitingPieces() {
@@ -120,12 +121,12 @@ public class Game {
         return currentRound;
     }
 
-    public int getCurrentPlayerIdx() {
-        return currentPlayerIdx;
+    public int getCurrentPlayerId() {
+        return currentPlayerId;
     }
 
     public Player getCurrentPlayer() {
-        return this.players.get(this.currentPlayerIdx - 1);
+        return this.players.get(this.currentPlayerId - 1);
     }
 
     public ArrayList<Piece> getIslandPieces() {

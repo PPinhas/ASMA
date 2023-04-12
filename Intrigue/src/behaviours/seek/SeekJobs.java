@@ -5,14 +5,18 @@ import behaviours.BehaviourUtils;
 import config.Protocols;
 import config.messages.EmployeesSent;
 import game.Game;
-import game.Player;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+
+import java.util.ArrayList;
 
 public abstract class SeekJobs extends OneShotBehaviour {
 
     protected final Game game;
     protected final IntrigueAgent intrigueAgent;
+
+    protected final ArrayList<Integer> pieceIndices = new ArrayList<>();
+    protected final ArrayList<Integer> playerIndices = new ArrayList<>();
 
     public SeekJobs(IntrigueAgent intrigueAgent) {
         super(intrigueAgent);
@@ -21,7 +25,6 @@ public abstract class SeekJobs extends OneShotBehaviour {
     }
 
     public void action() {
-        Player me = intrigueAgent.getOwnPlayer();
         EmployeesSent employeesSent = seekJobs();
         if (employeesSent.pieceIndices().isEmpty()) return; // Probably not possible
 

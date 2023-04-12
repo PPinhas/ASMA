@@ -1,26 +1,26 @@
 package agents;
 
 import behaviours.assign.AssignJobsPhase;
-import behaviours.assign.random.AssignJobsPhaseRandom;
+import behaviours.assign.greedy.AssignJobsPhaseGreedy;
 import behaviours.bribe.GiveBribe;
-import behaviours.bribe.GiveBribeRandom;
+import behaviours.bribe.GiveBribeGreedy;
 import behaviours.seek.SeekJobs;
-import behaviours.seek.SeekJobsRandom;
+import behaviours.seek.SeekJobsGreedy;
 import config.messages.ResolveConflict;
 
-public class RandomAgent extends IntrigueAgent {
+public class GreedyAgent extends IntrigueAgent {
     @Override
     protected AssignJobsPhase getAssignJobsBehaviour() {
-        return new AssignJobsPhaseRandom(this);
+        return new AssignJobsPhaseGreedy(this);
     }
 
     @Override
     protected SeekJobs getSeekJobsBehaviour() {
-        return new SeekJobsRandom(this);
+        return new SeekJobsGreedy(this);
     }
 
     @Override
     protected GiveBribe getResolveConflictBehaviour(ResolveConflict conflict) {
-        return new GiveBribeRandom(this, conflict);
+        return new GiveBribeGreedy(this, conflict);
     }
 }

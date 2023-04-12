@@ -15,8 +15,6 @@ public class AssignJobsDecisionRandom extends AssignJobsDecision {
 
     @Override
     protected JobsAssigned assignJobs(Palace palace) {
-        ArrayList<Integer> pieceIndices = new ArrayList<>();
-        ArrayList<Integer> cardIndices = new ArrayList<>();
         ArrayList<Palace.Card> availableCards = new ArrayList<>(palace.getEmptyCards());
 
         for (int i = 0; i < palace.getParkPieces().size(); i++) {
@@ -25,8 +23,9 @@ public class AssignJobsDecisionRandom extends AssignJobsDecision {
             int realCardIdx = palace.getCards().indexOf(availableCards.get(availableCardIdx));
             cardIndices.add(realCardIdx);
             availableCards.remove(availableCardIdx);
+            pieceOwners.add(palace.getParkPieces().get(i).getPlayer().getId());
         }
 
-        return new JobsAssigned(pieceIndices, cardIndices);
+        return new JobsAssigned(pieceIndices, cardIndices, pieceOwners);
     }
 }

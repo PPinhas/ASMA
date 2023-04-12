@@ -47,4 +47,8 @@ public abstract class Conflict {
         }
         bribes.put(player, bribe);
     }
+
+    public Integer getBribe(Player player) {
+        return bribes.get(player);
+    }
 }
