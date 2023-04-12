@@ -9,13 +9,6 @@ import static config.GameConfig.AGENT_TYPES;
 
 public class Main {
     public static void main(String[] args) {
-<<<<<<< Updated upstream
-        Profile profile = new ProfileImpl();
-        profile.setParameter(Profile.GUI, "true");
-        profile.setParameter(Profile.CONTAINER_NAME, "Intrigue");
-        AgentContainer gameContainer = jade.core.Runtime.instance().createMainContainer(profile);
-        new Game(gameContainer);
-=======
         for (int i = 0; i < AGENT_TYPES.length; i++) {
             for (int j = 0; j < AGENT_TYPES.length; j++) {
                 for (int k = 0; k < AGENT_TYPES.length; k++) {
@@ -37,6 +30,5 @@ public class Main {
             }
             break;
         }
->>>>>>> Stashed changes
     }
 }

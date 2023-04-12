@@ -20,12 +20,8 @@ public class Game {
     private final int numPlayers;
     private final ArrayList<Piece> islandPieces;
 
-<<<<<<< Updated upstream
-    public Game(AgentContainer container) {
-=======
     public Game(AgentContainer container, boolean createAgents, String[] agentTypes) {
         System.out.println("inside game constructor with createAgents as: " + createAgents);
->>>>>>> Stashed changes
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
@@ -37,11 +33,7 @@ public class Game {
 
         for (int i = 0; i < this.numPlayers; i++) {
             try {
-<<<<<<< Updated upstream
-                this.players.add(new Player(container, i + 1, this));
-=======
                 this.players.add(new Player(container, i + 1, this, createAgents, agentTypes[i]));
->>>>>>> Stashed changes
             } catch (StaleProxyException e) {
                 throw new RuntimeException(e);
             }

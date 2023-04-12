@@ -15,11 +15,7 @@ public class Player implements Comparable<Player> {
     private final ArrayList<Piece> pieces;
     private final Palace palace;
 
-<<<<<<< Updated upstream
-    public Player(AgentContainer container, int id, Game game) throws StaleProxyException {
-=======
     public Player(AgentContainer container, int id, Game game, boolean createAgents, String agentType) throws StaleProxyException {
->>>>>>> Stashed changes
         this.id = id;
         this.money = STARTING_MONEY;
         this.pieces = new ArrayList<>();
