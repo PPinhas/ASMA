@@ -11,6 +11,7 @@ import game.Palace;
 import game.Piece;
 import game.Player;
 import game.conflict.Conflict;
+import game.conflict.InternalConflict;
 import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SequentialBehaviour;
@@ -40,6 +41,9 @@ public abstract class ResolveConflict extends SequentialBehaviour {
     }
 
     public void onStart() {
+        if (conflict instanceof InternalConflict internalConflict) {
+            this.addSubBehaviour(new AskForBribe(intrigueAgent, internalConflict.getJobHolder()));
+        }
         for (Player player : conflict.getPlayers()) {
             this.addSubBehaviour(new AskForBribe(intrigueAgent, player));
         }
