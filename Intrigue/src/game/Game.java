@@ -1,5 +1,6 @@
 package game;
 
+import config.GameExporter;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
@@ -19,7 +20,8 @@ public class Game {
     private final int numPlayers;
     private final ArrayList<Piece> islandPieces;
 
-    public Game(AgentContainer container, boolean createAgents) {
+
+    public Game(AgentContainer container, boolean createAgents, String[] agentTypes) {
         this.maxRounds = NUM_ROUNDS;
         this.numPlayers = NUM_PLAYERS;
         this.currentRound = 1;
@@ -31,7 +33,7 @@ public class Game {
 
         for (int i = 0; i < this.numPlayers; i++) {
             try {
-                this.players.add(new Player(container, i + 1, this, createAgents));
+                this.players.add(new Player(container, i + 1, this, createAgents, agentTypes[i]));
             } catch (StaleProxyException e) {
                 throw new RuntimeException(e);
             }
@@ -49,6 +51,10 @@ public class Game {
         }
     }
 
+    public Game(AgentContainer containerController, boolean createAgents) {
+        this(containerController, createAgents, new String[]{"","","","",""});
+    }
+
     private void nextRound() {
         if (this.currentRound == this.maxRounds) {
             endGame();
@@ -58,8 +64,10 @@ public class Game {
     }
 
     private void endGame() {
+        ArrayList<Integer> data = new ArrayList<>();
         Player winner = players.get(0);
         for (Player player : this.players) {
+            data.add(player.getMoney());
             if (player.getMoney() > winner.getMoney()) {
                 winner = player;
             }
@@ -67,6 +75,7 @@ public class Game {
         this.isOver = true;
 
         System.out.println("Game is over. The winner is player" + winner.getId() + " with " + winner.getMoney() + " money.");
+        new GameExporter(data);
     }
 
     public void nextTurn() {

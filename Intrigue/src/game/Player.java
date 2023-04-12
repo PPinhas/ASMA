@@ -15,7 +15,7 @@ public class Player implements Comparable<Player> {
     private final ArrayList<Piece> pieces;
     private final Palace palace;
 
-    public Player(AgentContainer container, int id, Game game, boolean createAgents) throws StaleProxyException {
+    public Player(AgentContainer container, int id, Game game, boolean createAgents, String agentType) throws StaleProxyException {
         this.id = id;
         this.money = STARTING_MONEY;
         this.pieces = new ArrayList<>();
@@ -45,7 +45,7 @@ public class Player implements Comparable<Player> {
 
         // TODO Initialize right agent
         try {
-            AgentController agent = container.createNewAgent(agentName, "agents.RandomAgent", args);
+            AgentController agent = container.createNewAgent(agentName, agentType, args);
             agent.start();
         } catch (StaleProxyException e) {
             throw new RuntimeException(e);
