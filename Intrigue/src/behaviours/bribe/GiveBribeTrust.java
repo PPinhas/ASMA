@@ -1,17 +1,24 @@
 package behaviours.bribe;
 
 import agents.TrustAgent;
+import behaviours.BehaviourUtils;
 import config.GameConfig;
 import config.Protocols;
 import config.messages.BribeOffered;
 import config.messages.JobsAssigned;
 import config.messages.ResolveConflict;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 
 public class GiveBribeTrust extends GiveBribe {
     private final TrustAgent trustAgent;
     private int playerId;
+
+    private final MessageTemplate template = BehaviourUtils.buildMessageTemplate(
+            ACLMessage.INFORM,
+            Protocols.JOBS_ASSIGNED_CONFLICT
+    );
 
     public GiveBribeTrust(TrustAgent trustAgent, ResolveConflict conflict) {
         super(trustAgent, conflict);
@@ -24,8 +31,8 @@ public class GiveBribeTrust extends GiveBribe {
 
         ACLMessage reply;
         do {
-            reply = intrigueAgent.blockingReceive();
-        } while (!reply.getProtocol().equals(Protocols.JOBS_ASSIGNED));
+            reply = intrigueAgent.receive(template);
+        } while (reply == null);
 
         JobsAssigned jobsAssigned;
         try {
@@ -60,6 +67,7 @@ public class GiveBribeTrust extends GiveBribe {
                 largestBribe = bribe;
             }
         }
+        largestBribe = Math.max(GameConfig.MINIMUM_BRIBE, largestBribe);
 
         int trustFactor = trustAgent.getTrustFactor(game.getPlayerById(playerId));
         int bribe = largestBribe + (int) Math.round(trustFactor * trustAgent.getConfig().bribeGivenMultiplier());

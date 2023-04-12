@@ -1,5 +1,6 @@
 package game;
 
+import agents.IntrigueAgent;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
@@ -14,6 +15,8 @@ public class Player implements Comparable<Player> {
     private int money;
     private final ArrayList<Piece> pieces;
     private final Palace palace;
+
+    private IntrigueAgent agent = null;
 
     public Player(AgentContainer container, int id, Game game, boolean createAgents) throws StaleProxyException {
         this.id = id;
@@ -45,11 +48,15 @@ public class Player implements Comparable<Player> {
 
         // TODO Initialize right agent
         try {
-            AgentController agent = container.createNewAgent(agentName, "agents.GreedyAgent", args);
+            AgentController agent = container.createNewAgent(agentName, "agents.TrustAgent", args);
             agent.start();
         } catch (StaleProxyException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public IntrigueAgent getAgent() {
+        return agent;
     }
 
     public void moneyTransaction(int amount) {

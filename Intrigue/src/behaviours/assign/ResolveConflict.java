@@ -135,11 +135,17 @@ public abstract class ResolveConflict extends SequentialBehaviour {
             receivers.remove(intrigueAgent.getAID());
             ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.JOBS_ASSIGNED, jobsAssigned, receivers);
             intrigueAgent.send(msg);
+            ACLMessage msg2 = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.JOBS_ASSIGNED_CONFLICT, jobsAssigned, receivers);
+            intrigueAgent.send(msg2);
 
             List<Piece> pieces = new ArrayList<>();
             List<Palace.Card> cards = new ArrayList<>();
             for (int i = 0; i < jobsAssigned.selectedPieceIndices().size(); i++) {
-                pieces.add(game.getCurrentPlayer().getPalace().getParkPieces().get(jobsAssigned.selectedPieceIndices().get(i)));
+                if (jobsAssigned.selectedPieceIndices().get(i) == -1) { // job holder stays the same
+                    pieces.add(null);
+                } else {
+                    pieces.add(game.getCurrentPlayer().getPalace().getParkPieces().get(jobsAssigned.selectedPieceIndices().get(i)));
+                }
                 cards.add(game.getCurrentPlayer().getPalace().getCards().get(jobsAssigned.cardIndices().get(i)));
             }
 

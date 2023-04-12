@@ -28,14 +28,14 @@ public class TrustAgent extends IntrigueAgent {
     @Override
     protected void setup() {
         super.setup();
-        for (Player player : game.getPlayers()) {
-            if (player.getId() == this.getId()) continue;
-            trustFactors.put(player, 0);
-        }
         if (getArguments().length >= 3)
             this.config = (TrustAgentConfig) getArguments()[2];
         else
             this.config = new TrustAgentConfig(); // Default
+        for (Player player : game.getPlayers()) {
+            if (player.getId() == this.getId()) continue;
+            trustFactors.put(player, 0);
+        }
     }
 
     @Override
@@ -67,9 +67,9 @@ public class TrustAgent extends IntrigueAgent {
 
     public Player getMostTrustedPlayer() {
         Player mostTrustedPlayer = null;
-        int mostTrust = -1;
+        int mostTrust = trustFactors.values().stream().toList().get(0);
         for (Player player : trustFactors.keySet()) {
-            if (trustFactors.get(player) > mostTrust) {
+            if (trustFactors.get(player) >= mostTrust) {
                 mostTrust = trustFactors.get(player);
                 mostTrustedPlayer = player;
             }
@@ -126,6 +126,8 @@ public class TrustAgent extends IntrigueAgent {
 
             int factorDiff = (int) Math.round((jobValue - averageValue) * config.assignedJobMultiplier());
             trustAgent.changeTrustFactor(game.getCurrentPlayer(), factorDiff);
+
+            System.out.println("trust factors player " + getId() + " " + trustAgent.getTrustFactors());
         }
 
         @Override
@@ -138,7 +140,7 @@ public class TrustAgent extends IntrigueAgent {
                 throw new RuntimeException(e);
             }
 
-            if (info.playerId() != trustAgent.getId()) return;
+            if (info.playerId() == trustAgent.getId()) return;
             int bribeDiff = info.amount() - GameConfig.MINIMUM_BRIBE;
             int factorDiff = (int) Math.round(bribeDiff * config.bribeReceivedMultiplier());
             trustAgent.changeTrustFactor(game.getCurrentPlayer(), factorDiff);
