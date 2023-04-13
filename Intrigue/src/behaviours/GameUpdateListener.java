@@ -76,8 +76,10 @@ public class GameUpdateListener extends CyclicBehaviour {
             cards.add(this.game.getCurrentPlayer().getPalace().getCards().get(info.cardIndices().get(i)));
         }
 
-        for (int i = 0; i < pieces.size(); i++) {
-            this.game.assignJob(pieces.get(i), cards.get(i));
+        if(pieces.size()!=0) {
+            for (int i = 0; i < pieces.size(); i++) {
+                this.game.assignJob(pieces.get(i), cards.get(i));
+            }
         }
     }
 
