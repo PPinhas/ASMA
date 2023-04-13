@@ -6,7 +6,7 @@ df = pd.read_csv('results.csv', header=None)
 players = df.iloc[0].tolist()
 num_players = len(players)
 
-num_repetitions = 3
+num_repetitions = 5
 
 for i in range((len(df.index)-1)//(num_repetitions+1)):
     start = i*(num_repetitions+1)

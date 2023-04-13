@@ -12,17 +12,32 @@ import static java.lang.Thread.sleep;
 
 public class Main {
     public static void main(String[] args) {
-        String[] agentTypes = {AGENT_TYPES[0], AGENT_TYPES[0], AGENT_TYPES[0], AGENT_TYPES[0], AGENT_TYPES[0]};
-        new GameExporter(agentTypes);
-        for (int numRepetitions = 0; numRepetitions < NUM_REPETITIONS; numRepetitions++) {
-            Profile profile = new ProfileImpl();
-            profile.setParameter(Profile.CONTAINER_NAME, "Intrigue");
-            AgentContainer gameContainer = jade.core.Runtime.instance().createMainContainer(profile);
-            new Game(gameContainer, true, agentTypes);
-            try {
-                sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        Integer[] values = {
+                0,0,0,0,0,
+                1,1,1,1,1,
+                2,2,2,2,2,
+                0,0,1,0,0,
+                0,0,2,0,0,
+                1,1,2,1,1,
+                0,1,1,0,0,
+                0,2,2,0,0,
+                1,2,2,1,1,
+                0,1,2,1,0,
+                0,1,2,2,1,
+        };
+        for(int i =0; i < values.length; i = i+5){
+            String[] agentTypes = {AGENT_TYPES[values[i]], AGENT_TYPES[values[i+1]], AGENT_TYPES[values[i+2]], AGENT_TYPES[values[i+3]], AGENT_TYPES[values[i+4]]};
+            new GameExporter(agentTypes);
+            for (int numRepetitions = 0; numRepetitions < NUM_REPETITIONS; numRepetitions++) {
+                Profile profile = new ProfileImpl();
+                profile.setParameter(Profile.CONTAINER_NAME, "Intrigue");
+                AgentContainer gameContainer = jade.core.Runtime.instance().createMainContainer(profile);
+                new Game(gameContainer, true, agentTypes);
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

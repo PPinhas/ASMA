@@ -182,7 +182,6 @@ public class Game {
 
 
     public void display() {
-        return;
         /*
         StringBuilder board = new StringBuilder();
 

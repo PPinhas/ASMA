@@ -23,8 +23,15 @@ public class AssignJobsDecisionTrust extends AssignJobsDecision {
         ArrayList<Piece> waitingPieces = new ArrayList<>(palace.getParkPieces());
 
         while (!waitingPieces.isEmpty()) {
-            // get best card and assign it to player with more trust
-            Palace.Card bestCard = availableCards.get(0);
+            // get best card and assign it to player with more
+            Palace.Card bestCard;
+
+            if(!availableCards.isEmpty()){
+                bestCard = availableCards.get(0);
+            }else{
+                bestCard = palace.getCards().get(0);
+            }
+
             for (Palace.Card card : availableCards) {
                 if (card.getValue() > bestCard.getValue()) {
                     bestCard = card;
