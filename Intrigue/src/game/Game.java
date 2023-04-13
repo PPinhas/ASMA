@@ -53,7 +53,7 @@ public class Game {
     }
 
     public Game(AgentContainer containerController, boolean createAgents) {
-        this(containerController, createAgents, new String[]{"","","","","","","","","","","","","","","","","","","",""});
+        this(containerController, createAgents, new String[]{"","","","",""});
     }
 
     private void nextRound() {
@@ -182,7 +182,6 @@ public class Game {
 
 
     public void display() {
-        /*
         StringBuilder board = new StringBuilder();
 
 
@@ -247,6 +246,5 @@ public class Game {
         board.append("\n");
 
         System.out.println(board);
-        */
     }
 }
