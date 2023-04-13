@@ -6,6 +6,7 @@ import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static config.GameConfig.NUM_PLAYERS;
 import static config.GameConfig.NUM_ROUNDS;
@@ -57,7 +58,7 @@ public class Game {
 
     private void nextRound() {
         if (this.currentRound == this.maxRounds) {
-            endGame();
+            this.isOver = true;
         } else {
             this.currentRound++;
         }
@@ -65,6 +66,7 @@ public class Game {
 
     private void endGame() {
         String[] data = new String[5];
+        collectIncome();
         Player winner = players.get(0);
 
         for(int i = 0; i < this.players.size(); i++){
@@ -73,8 +75,8 @@ public class Game {
                 winner = this.players.get(i);
             }
         }
-        this.isOver = true;
 
+        this.display();
         System.out.println("Game is over. The winner is player" + winner.getId() + " with " + winner.getMoney() + " money.");
         new GameExporter(data);
     }
@@ -100,17 +102,27 @@ public class Game {
         }
     }
 
-    public void assignJob(int pieceIdx, int cardIndex) {
+    public void assignJob(Piece piece, Palace.Card card) {
         Palace palace = this.getCurrentPlayer().getPalace();
-        Piece replacedPiece = palace.assignPiece(pieceIdx, cardIndex);
-        if (replacedPiece != null) {
-            this.getIslandPieces().add(replacedPiece);
+        if (piece != null) { // null means the job owner stays the same
+            Piece replacedPiece = palace.assignPiece(piece, card);
+            if (replacedPiece != null) {
+                this.getIslandPieces().add(replacedPiece);
+            }
+        }
+
+        // banish conflict pieces
+        List<Piece> parkPieces = new ArrayList<>(palace.getParkPieces());
+        for (Piece p : parkPieces) {
+            if (p.getJob().equals(card.getPiece().getJob())) {
+                palace.getParkPieces().remove(p);
+                this.islandPieces.add(p);
+            }
         }
     }
 
-    public void seekJob(int playerIdx, int pieceIndex) {
-        Piece piece;
-        piece = this.getCurrentPlayer().getPieces().remove(pieceIndex);
+    public void seekJob(int playerIdx, Piece piece) {
+        this.getCurrentPlayer().getPieces().remove(piece);
         this.players.get(playerIdx).getPalace().addWaitingPiece(piece);
     }
 
@@ -169,7 +181,7 @@ public class Game {
     }
 
 
-    private void displayGame() {
+    public void display() {
         StringBuilder board = new StringBuilder();
 
 

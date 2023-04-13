@@ -25,4 +25,17 @@ public class InternalConflict extends Conflict implements Comparable<InternalCon
     public int compareTo(InternalConflict other) {
         return Integer.compare(value, other.value);
     }
+
+    @Override
+    public void addBribe(int playerId, int bribe) {
+        try {
+            super.addBribe(playerId, bribe);
+        } catch (IllegalArgumentException e) {
+            if (playerId == jobHolder.getId()) {
+                bribes.put(jobHolder, bribe);
+            } else {
+                throw e;
+            }
+        }
+    }
 }

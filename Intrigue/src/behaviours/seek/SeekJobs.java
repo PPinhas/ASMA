@@ -2,6 +2,7 @@ package behaviours.seek;
 
 import agents.IntrigueAgent;
 import behaviours.BehaviourUtils;
+import config.GameConfig;
 import config.Protocols;
 import config.messages.EmployeesSent;
 import game.Game;
@@ -26,8 +27,8 @@ public abstract class SeekJobs extends OneShotBehaviour {
 
     public void action() {
         EmployeesSent employeesSent = seekJobs();
-        if (employeesSent.pieceIndices().isEmpty()) return; // Probably not possible
 
+        block(GameConfig.ACTION_DELAY_MS);
         ACLMessage msg = BehaviourUtils.buildMessage(ACLMessage.INFORM, Protocols.EMPLOYEES_SENT, employeesSent, intrigueAgent.getAgents());
         intrigueAgent.send(msg);
     }

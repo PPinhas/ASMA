@@ -15,4 +15,5 @@ public class GameConfig {
     public static final String CSV_FILENAME = "results.csv";
     public static final String[] CSV_HEADERS = {"Player1", "Player2", "Player3", "Player4", "Player5"};
     public static final String[] AGENT_TYPES = {"agents.RandomAgent", "agents.GreedyAgent", "agents.TrustAgent"};
+    public static long ACTION_DELAY_MS = 100;
 }
