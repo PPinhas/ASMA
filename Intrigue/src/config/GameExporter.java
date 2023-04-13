@@ -32,6 +32,7 @@ public class GameExporter {
                     csvWriter.append(",");
                 }
             }
+            csvWriter.append("\n");
             csvWriter.flush();
             csvWriter.close();
         } catch (IOException e) {

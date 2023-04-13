@@ -24,4 +24,6 @@ for i in range((len(df.index)-1)//(num_repetitions+1)):
     plt.ylabel('Score')
     plt.xticks(range(len(player_data)), ['Game {}'.format(x+1) for x in range(len(player_data))])
     plt.legend()
+    plt.savefig(f'plots/plot_{i}.png')
     plt.show()
+

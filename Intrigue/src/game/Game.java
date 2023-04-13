@@ -64,13 +64,13 @@ public class Game {
         }
     }
 
-    private void endGame() {
+    public void endGame() {
         String[] data = new String[5];
         collectIncome();
         Player winner = players.get(0);
 
         for(int i = 0; i < this.players.size(); i++){
-            data[i] = String.valueOf(getCurrentPlayer().getMoney());
+            data[i] = String.valueOf(this.players.get(i).getMoney());
             if(this.players.get(i).getMoney() > winner.getMoney()){
                 winner = this.players.get(i);
             }
@@ -182,6 +182,8 @@ public class Game {
 
 
     public void display() {
+        return;
+        /*
         StringBuilder board = new StringBuilder();
 
 
@@ -246,5 +248,6 @@ public class Game {
         board.append("\n");
 
         System.out.println(board);
+        */
     }
 }
