@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('results10rounds.csv', header=None)
+df = pd.read_csv('results10rounds20Players.csv', header=None)
 
 players = df.iloc[0].tolist()
 num_players = len(players)

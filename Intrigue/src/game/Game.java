@@ -53,7 +53,7 @@ public class Game {
     }
 
     public Game(AgentContainer containerController, boolean createAgents) {
-        this(containerController, createAgents, new String[]{"","","","",""});
+        this(containerController, createAgents, new String[]{"","","","","","","","","","","","","","","","","","","",""});
     }
 
     private void nextRound() {
@@ -65,7 +65,7 @@ public class Game {
     }
 
     public void endGame() {
-        String[] data = new String[5];
+        String[] data = new String[NUM_PLAYERS];
         collectIncome();
         Player winner = players.get(0);
 
