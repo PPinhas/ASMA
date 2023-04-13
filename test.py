@@ -1,12 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('results.csv', header=None)
+df = pd.read_csv('results10reps.csv', header=None)
 
 players = df.iloc[0].tolist()
 num_players = len(players)
 
-num_repetitions = 5
+num_repetitions = 10
 
 for i in range((len(df.index)-1)//(num_repetitions+1)):
     start = i*(num_repetitions+1)
@@ -22,8 +22,8 @@ for i in range((len(df.index)-1)//(num_repetitions+1)):
     plt.title('Player Scores Over Time')
     plt.xlabel('Game Number')
     plt.ylabel('Score')
-    plt.xticks(range(len(player_data)), ['Game {}'.format(x+1) for x in range(len(player_data))])
+    plt.xticks(range(len(player_data)), ['Game {}'.format(x+1) for x in range(len(player_data))], fontsize=8, rotation=45)
     plt.legend()
-    plt.savefig(f'plots/plot_{i}.png')
+    plt.savefig(f'plots/10reps/plot_{i}.png')
     plt.show()
 

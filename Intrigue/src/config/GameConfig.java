@@ -11,8 +11,8 @@ public class GameConfig {
     public static final int NUM_HEALERS_PER_PLAYER = 2;
     public static final int MINIMUM_BRIBE = 1000;
     public static long TIMEOUT = 5000;
-    public static final int NUM_REPETITIONS = 5;
-    public static final String CSV_FILENAME = "results.csv";
+    public static final int NUM_REPETITIONS = 10;
+    public static final String CSV_FILENAME = "results10reps.csv";
     public static final String[] CSV_HEADERS = {"Player1", "Player2", "Player3", "Player4", "Player5"};
     public static final String[] AGENT_TYPES = {"agents.RandomAgent", "agents.GreedyAgent", "agents.TrustAgent"};
     public static long ACTION_DELAY_MS = 100;
